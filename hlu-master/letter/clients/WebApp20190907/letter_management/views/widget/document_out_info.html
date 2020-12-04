@@ -1,0 +1,86 @@
+<div class="cus-form">
+	<div class="row">
+        <div class="col-md-12">
+			<label class="bold"><span class="impor">*  </span>Tiêu đề văn
+				bản</label> <input style="font-size: 18px;" class="form-control"
+				type="text" ng-model="vm.letterIn.title"
+				ng-disabled="vm.isDisabled()">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<label class="bold">Trích yếu</label>
+			<textarea style="font-size: 18px" class="form-control textarea-size"
+				ng-model="vm.letterIn.briefNote" ng-disabled="vm.isDisabled()"></textarea>
+			<div ng-if="vm.letterIn.briefNote.length > 1000">
+				<small class="text-danger">Trích yếu nội dung không được quá
+					1000 ký tự</small>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-2">
+		<label class="bold">Ngày tạo</label>
+		<input style="font-size: 18px" ng-disabled="true" my-date-picker class="form-control"
+			ng-model="vm.letterIn.registeredDate" type="text">
+	</div>
+
+	<div class="col-md-1">
+		<label class="bold">Số tờ</label> <input style="font-size: 18px"
+			class="form-control" ng-disabled="vm.isDisabled()"
+			ng-model="vm.letterIn.numberOfPages" min="1" type="number">
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label class="bold"><span class="impor">* </span>Tài liệu đính kèm</label>
+			<div class="row">
+				<div>
+					<div class="col-md-12">
+						<a class="no-content1 display-block link"
+							ng-disabled="vm.isDisabled()"
+							ngf-select="vm.uploadFiles($file, $invalidFiles)" accept="*/*"
+							ngf-max-size="100MB"> <i class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+						</a>
+					</div>
+					<div class="col-md-8 upload-description">Cho phép .jpg, .jpeg, .png, .bmp, .gif, .doc, .docx, .xls, .xlsx, .pdf, .rar, .zip tối đa 100MB</div>
+					<div class="col-md-12 margin-top-20"
+						ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+						Có lỗi: <span class="bold" ng-if="vm.errorFile.$error == 'maxSize'">Kích
+							thước tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span> <span
+							class="bold"
+							ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp
+							tin {{vm.errorFile.name}} không hợp lệ.</span>
+					</div>
+				</div>
+				<div class="row"
+					ng-if="vm.letterIn.attachments.length > 0 && !vm.isDisabled()">
+					<div class="col-md-12">
+						<table id="bsTableControl4Files"
+							bs-table-control="vm.bsTableControl4Files">
+						</table>
+					</div>
+				</div>
+				<div class="row"
+					ng-if="vm.letterIn.attachments.length > 0 && vm.isDisabled()">
+					<div class="col-md-12 margin-top-20">
+						<table id="bsTableControl4FilesProcess"
+							bs-table-control="vm.bsTableControl4FilesProcess">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+.impor {
+	color: red;
+	font-weight: bold;
+}
+</style>

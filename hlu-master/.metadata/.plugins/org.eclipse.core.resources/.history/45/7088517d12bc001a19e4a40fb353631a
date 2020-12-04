@@ -1,0 +1,293 @@
+package com.globits.letter.utils;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.NumberToTextConverter;
+import org.apache.poi.ss.util.PropertyTemplate;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.globits.calendar.domain.EventAttendee;
+import com.globits.calendar.dto.EventAttendeeDto;
+import com.globits.calendar.dto.EventDto;
+import com.globits.core.dto.PersonAddressDto;
+import com.globits.security.dto.RoleDto;
+import com.globits.security.dto.UserDto;
+
+public class ImportExportExcelUtil {
+	private static Hashtable<String, Integer> hashSubjectColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashSubjectColumnPropertyConfig = new Hashtable<String, String>();
+
+	private static Hashtable<String, Integer> hashQuestionColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashQuestionColumnPropertyConfig = new Hashtable<String, String>();
+
+	private static Hashtable<String, Integer> hashStudentColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashColumnPropertyConfig = new Hashtable<String, String>();
+	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private static DecimalFormat numberFormatter = new DecimalFormat("######################");
+
+	public static void exportEventPublic(List<EventDto> listEventDto, ServletOutputStream out, InputStream ip) throws IOException {
+		Workbook workbook = new HSSFWorkbook(ip);
+		CreationHelper createHelper = workbook.getCreationHelper();
+
+		PropertyTemplate pt = new PropertyTemplate();
+		Font font = workbook.createFont();
+		font.setColor(IndexedColors.BLACK.getIndex());
+
+		CellStyle cellStyle = workbook.createCellStyle();
+		cellStyle.setFont(font);
+		cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		cellStyle.setBorderTop(BorderStyle.THIN);
+		cellStyle.setBorderBottom(BorderStyle.THIN);
+		cellStyle.setBorderLeft(BorderStyle.THIN);
+		cellStyle.setBorderRight(BorderStyle.THIN);
+
+		CellStyle cellStyleCenter = workbook.createCellStyle();
+		cellStyleCenter.setFont(font);
+		cellStyleCenter.setVerticalAlignment(VerticalAlignment.CENTER);
+		cellStyleCenter.setAlignment(HorizontalAlignment.CENTER);
+		cellStyleCenter.setBorderTop(BorderStyle.THIN);
+		cellStyleCenter.setBorderBottom(BorderStyle.THIN);
+		cellStyleCenter.setBorderLeft(BorderStyle.THIN);
+		cellStyleCenter.setBorderRight(BorderStyle.THIN);
+		
+		CellStyle cellStyleContent = workbook.createCellStyle();
+		cellStyleContent.setWrapText(true);
+		cellStyleContent.setAlignment(HorizontalAlignment.LEFT);
+		cellStyleContent.setVerticalAlignment(VerticalAlignment.TOP);
+		
+		CellStyle cellStyleHour = workbook.createCellStyle();
+		cellStyleHour.setWrapText(true);
+		cellStyleHour.setAlignment(HorizontalAlignment.CENTER);
+		cellStyleHour.setVerticalAlignment(VerticalAlignment.CENTER);
+		
+		CellStyle roomStyle = workbook.createCellStyle();
+		roomStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		roomStyle.setAlignment(HorizontalAlignment.RIGHT);
+		
+		int rowIndex = 6;
+		int index = 0;
+		Date dateNow = new Date();
+		String pattern = "dd-MM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String patternHour = "HH:mm";
+		SimpleDateFormat hourDateFormat = new SimpleDateFormat(patternHour);
+		String patternTimeHour = "AM";
+		SimpleDateFormat TimeHourFormat = new SimpleDateFormat(patternTimeHour);
+		
+		
+		if (listEventDto != null && listEventDto.size() > 0) {
+			Sheet sheet = null;
+			sheet = workbook.getSheetAt(0);
+			for(int i=0; i<listEventDto.size(); i++) {
+				int  dateStart = listEventDto.get(i).getStartTime().toDate().getHours();
+//				cons
+//				int dateTypeInt = Integer.parseInt(dateStart);
+//				if()
+			}
+			//CÁC CUỘC HỌP BUỔI SÁNG
+			String  hourStart = TimeHourFormat.format(listEventDto.get(0).getStartTime().toDate());
+			if(hourStart.equalsIgnoreCase("AM0")) {
+				//truyền dữ liệu vào ngày họp
+				Row rowDate = sheet.getRow(4);
+				Cell cellDate = rowDate.getCell(0);
+				cellDate.setCellStyle(cellStyleHour);
+				
+				if (listEventDto.get(0).getStartTime() != null) {
+					String  dateStart = simpleDateFormat.format(listEventDto.get(0).getStartTime().toDate());
+					cellDate.setCellValue("Thứ 2" + "(" + dateStart +")");
+				}
+				
+				//truyền dữ liệu vào giờ họp
+				Row rowHour = sheet.getRow(4);
+				Cell cellHour = rowHour.getCell(1);
+				cellHour.setCellStyle(cellStyleHour);
+				
+				if (listEventDto.get(0).getStartTime() != null) {
+					String  hourStartS = hourDateFormat.format(listEventDto.get(0).getStartTime().toDate());
+					cellHour.setCellValue(hourStartS);
+				}
+				
+				//truyền dữ liệu vào  nội dung
+				Row rowContent = sheet.getRow(4);
+				Cell cellContent = rowContent.getCell(2);
+				cellContent.setCellStyle(cellStyleContent);
+				if (listEventDto.get(0).getDescription() != null) {
+					cellContent.setCellValue("Nội dung: " + listEventDto.get(0).getDescription());
+					
+				}
+				//truyền dữ liệu vào chủ trì
+				Row rowChairPerson = sheet.getRow(5);
+				Cell cellChairPerson = rowChairPerson.getCell(2);
+				if (listEventDto.get(0).getChairPerson() != null) {
+					cellChairPerson.setCellValue("Chủ trì: " + listEventDto.get(0).getChairPerson().getDisplayName());
+				}
+				//truyền dữ liệu vào thành phần tham gia
+				Row rowPersonDeparterment = sheet.getRow(6);
+				Cell cellPersonDeparterment = rowPersonDeparterment.getCell(2);
+				cellPersonDeparterment.setCellStyle(cellStyleContent);
+				if (listEventDto.get(0).getsAttendees() != null) {
+					List<String> personJoin = new ArrayList<String>();
+					List<String> deparJoin = new ArrayList<String>();
+					if(listEventDto.get(0).getsAttendees().size() >0) {
+						for(EventAttendeeDto e : listEventDto.get(0).getsAttendees()) {
+							String p = e.getDisplayName();
+							personJoin.add(p);
+						}
+						
+					}
+					if(listEventDto.get(0).getdAttendees().size()>0) {
+						for(EventAttendeeDto e : listEventDto.get(0).getdAttendees()) {
+							String d = e.getDisplayName();
+							deparJoin.add(d);
+						}
+						
+					}
+					if(personJoin.size() >0 || deparJoin.size() >0) {
+						String ptemp = "";
+						for(int i=0 ;i<personJoin.size(); i++) {
+							if(personJoin.get(i) != null)
+							ptemp += personJoin.get(i);
+							if(personJoin.size() - 1 != i) {
+								ptemp += ", ";
+							}else ptemp += "";
+						}
+						String dtemp = "";
+						for(int i=0 ;i<deparJoin.size(); i++) {
+							if(deparJoin.get(i) != null)
+							dtemp += deparJoin.get(i);
+							if(deparJoin.size() - 1 != i) {
+								dtemp += ", ";
+							}else dtemp += "";
+						}
+						cellPersonDeparterment.setCellValue("Tham dự: " + ptemp +", "+ dtemp);
+					}
+				}
+				//truyền dữ liệu vào phòng
+				Row rowRoom = sheet.getRow(7);
+				Cell cellRoom = rowRoom.getCell(2);
+				cellRoom.setCellStyle(roomStyle);
+				if(listEventDto.get(0).getRoom() != null) {
+					cellRoom.setCellValue("Phòng:" +listEventDto.get(0).getRoom().getName());
+				}
+			}
+//			if(!hourStart.equalsIgnoreCase("AM0")) {
+//				//truyền dữ liệu vào ngày họp
+//				Row rowDate = sheet.getRow(4);
+//				Cell cellDate = rowDate.getCell(0);
+//				cellDate.setCellStyle(cellStyleHour);
+//				
+//				if (listEventDto.get(0).getStartTime() != null) {
+//					String  dateStart = simpleDateFormat.format(listEventDto.get(0).getStartTime().toDate());
+//					cellDate.setCellValue("Thứ 2" + "(" + dateStart +")");
+//				}
+				//CÁC CUỘC HỌP BUỔI CHIỀU
+				//truyền dữ liệu vào giờ họp
+				Row rowHour = sheet.getRow(4);
+				Cell cellHour = rowHour.getCell(3);
+				cellHour.setCellStyle(cellStyleHour);
+				
+				if (listEventDto.get(1).getStartTime() != null) {
+					String  hourStartC = hourDateFormat.format(listEventDto.get(1).getStartTime().toDate());
+					cellHour.setCellValue(hourStartC);
+				}
+				
+				//truyền dữ liệu vào  nội dung
+				Row rowContent = sheet.getRow(4);
+				Cell cellContent = rowContent.getCell(4);
+				cellContent.setCellStyle(cellStyleContent);
+				if (listEventDto.get(1).getDescription() != null) {
+					cellContent.setCellValue("Nội dung: " + listEventDto.get(1).getDescription());
+					
+				}
+				//truyền dữ liệu vào chủ trì
+				Row rowChairPerson = sheet.getRow(5);
+				Cell cellChairPerson = rowChairPerson.getCell(4);
+				if (listEventDto.get(1).getChairPerson() != null) {
+					cellChairPerson.setCellValue("Chủ trì: " + listEventDto.get(1).getChairPerson().getDisplayName());
+				}
+				//truyền dữ liệu vào thành phần tham gia
+				Row rowPersonDeparterment = sheet.getRow(6);
+				Cell cellPersonDeparterment = rowPersonDeparterment.getCell(4);
+				cellPersonDeparterment.setCellStyle(cellStyleContent);
+				if (listEventDto.get(1).getsAttendees() != null) {
+					List<String> personJoin = new ArrayList<String>();
+					List<String> deparJoin = new ArrayList<String>();
+					if(listEventDto.get(1).getsAttendees().size() >0) {
+						for(EventAttendeeDto e : listEventDto.get(1).getsAttendees()) {
+							String p = e.getDisplayName();
+							personJoin.add(p);
+						}
+						
+					}
+					if(listEventDto.get(1).getdAttendees().size()>0) {
+						for(EventAttendeeDto e : listEventDto.get(1).getdAttendees()) {
+							String d = e.getDisplayName();
+							deparJoin.add(d);
+						}
+						
+					}
+					if(personJoin.size() >0 || deparJoin.size() >0) {
+						String ptemp = "";
+						for(int i=0 ;i<personJoin.size(); i++) {
+							if(personJoin.get(i) != null)
+							ptemp += personJoin.get(i);
+							if(personJoin.size() - 1 != i) {
+								ptemp += ", ";
+							}else ptemp += "";
+						}
+						String dtemp = "";
+						for(int i=0 ;i<deparJoin.size(); i++) {
+							if(deparJoin.get(i) != null)
+							dtemp += deparJoin.get(i);
+							if(deparJoin.size() - 1 != i) {
+								dtemp += ", ";
+							}else dtemp += "";
+						}
+						cellPersonDeparterment.setCellValue("Tham dự: " + ptemp +", "+ dtemp);
+					}
+				}
+				//truyền dữ liệu vào phòng
+				Row rowRoom = sheet.getRow(7);
+				Cell cellRoom = rowRoom.getCell(4);
+				cellRoom.setCellStyle(roomStyle);
+				if(listEventDto.get(1).getRoom() != null) {
+					cellRoom.setCellValue("Phòng:" +listEventDto.get(1).getRoom().getName());
+				}
+			}
+			
+//		}
+		
+		workbook.write(out);
+		workbook.close();
+	}
+}

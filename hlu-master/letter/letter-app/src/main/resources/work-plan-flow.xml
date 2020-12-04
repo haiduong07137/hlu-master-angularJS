@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding="UTF-8" ?>
+
+<!-- A list of system-managed user roles. These roles are created/updated 
+	at system start-up, and cannot be modified/deleted at runtime. For method-level 
+	security check, we can hard-code these roles such as @PreAuthorize("hasRole('ROLE_ADMIN')") -->
+
+
+<flow>
+	<flow-code>WORKPLANFLOW</flow-code>
+	<flow-name>Quản lý kế hoạch</flow-name>
+	<task-steps>
+		<task-step>
+			<step-code>WORKPLANFLOWSTEP1</step-code>
+			<description>Mới tạo</description>
+		</task-step>
+		<task-step>
+			<step-code>WORKPLANFLOWSTEP2</step-code>
+			<description>Duyệt kế hoạch</description>
+		</task-step>
+		<task-step>
+			<step-code>WORKPLANFLOWSTEP3</step-code>
+			<description>Ban hành kế hoạch</description>
+		</task-step>
+	</task-steps>
+</flow>

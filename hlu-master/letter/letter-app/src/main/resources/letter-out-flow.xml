@@ -1,0 +1,39 @@
+<?xml version = "1.0" encoding="UTF-8" ?>
+
+<!-- A list of system-managed user roles. These roles are created/updated 
+	at system start-up, and cannot be modified/deleted at runtime. For method-level 
+	security check, we can hard-code these roles such as @PreAuthorize("hasRole('ROLE_ADMIN')") -->
+
+
+<flow>
+	<flow-code>LETTEROUTFLOW</flow-code>
+	<flow-name>Quản lý văn bản đi</flow-name>
+<!-- 	<task-steps>
+		<task-step>
+			<step-code>LETTEROUTSTEP1</step-code>
+			<description>Vào sổ văn bản đi</description>
+		</task-step>
+		<task-step>
+			<step-code>LETTEROUTSTEP2</step-code>
+			<description>Văn bản đã chuyển đi</description>
+		</task-step>	
+	</task-steps> -->
+		<task-steps>
+		<task-step>
+			<step-code>LETTEROUTSTEP1</step-code>
+			<description>Văn bản đã vào sổ</description>
+		</task-step>
+		<task-step>
+			<step-code>LETTEROUTSTEP2</step-code>
+			<description>Văn bản chờ lãnh đạo phòng duyệt</description>
+		</task-step>
+		<task-step>
+			<step-code>LETTEROUTSTEP3</step-code>
+			<description>Dự thảo đang xử lý</description>
+		</task-step>
+		<task-step>
+			<step-code>LETTEROUTSTEP4</step-code>
+			<description>Dự thảo đã phê duyệt</description>
+		</task-step>
+	</task-steps>
+</flow>

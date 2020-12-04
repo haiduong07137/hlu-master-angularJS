@@ -1,0 +1,315 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+	<div class="portlet light bordered">
+		<div class="portlet-body">
+			<div class="row margin-top-10 margin-bottom-10">
+				<div class="col-md-12">
+					<div class="col-md-3">
+						<!-- <h3 style="border-bottom: 6px solid #D3D3D3;">Chủ đề</h3> -->
+						<ul>
+							<li ng-class="{'check' : vm.selectedCategory.id == null}"
+								style="margin: 0px 0px 0px 20px; font-size: 20px"><a
+								href="#" ng-click="vm.getAllDocumentCustom()"><span>»
+										Tất cả tài liệu</span></a></li>
+							<li ng-class="{'check' : vm.selectedCategory.id == cate.id}"
+								style="margin: 0px 0px 0px 20px; font-size: 20px"
+								ng-repeat="cate in vm.categorys"><a href="#"
+								ng-click="vm.selectCategory(cate)"><span
+									ng-bind-html="'» '+cate.name"></span></a></li>
+						</ul>
+					</div>
+					<div class="col-md-9">
+						<div class="margin-top-10 margin-bottom-10" ng-if="hasClerkRole">
+							<div class="btn-group">
+								<button class="btn btn-default" data-ng-click="vm.newDocument()">
+									<i class="fa fa-plus-circle"></i>Thêm mới tài liệu
+								</button>
+							</div>
+						</div>
+						<div
+							class="item-policies margin-top-20 margin-bottom-20 col-md-12"
+							style="border-bottom: 6px solid #D3D3D3; background-color: #F5F5F5;"
+							ng-repeat="item in vm.documents">
+							<div class="item-title margin-top-10 clearfix">
+								<a class="col-md-10"
+									style="text-transform: uppercase; font-size: 20px; font-weight: bold; padding-left: 0px"
+									href="#" ng-click="vm.viewDocument(item.id)">
+									{{item.title}} </a>
+								<div class="btn-edit pull-right" ng-if="hasClerkRole">
+									<button ng-click="editDocument(item.id)"
+										class="btn btn-primary" style="padding-right: 10px;">
+										<span class="glyphicon glyphicon-edit"></span> Sửa
+									</button>
+									<button ng-click="deleteDocument(item.id)"
+										class="btn btn-danger">
+										<span class="glyphicon glyphicon-trash"></span> Xóa
+									</button>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="col-md-11 item-border-right margin-bottom-10">
+									{{item.summary}}
+									<div class="col-md-12" style="margin-top: 20px;">
+										<a style="font-weight: bold; float: right;"
+											data-ng-click="vm.file(item.id)"> <span
+											class="glyphicon glyphicon-file"></span> Tài liệu
+										</a> <br>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="margin-top-20" ng-if="vm.documents.length > 0">
+							<a href="#" ng-click="vm.prePage()"
+								class="btn1 btn-outline-secondary pull-left"
+								ng-disabled="vm.pageIndex == 1">&larr; Trang cũ hơn</a> <a
+								href="#" ng-click="vm.nextPage()"
+								class="btn1 btn-outline-dark pull-right"
+								ng-disabled="vm.pageIndex >= vm.totalPage">Trang mới &rarr;</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_document_modal.html">
+    <div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title" data-ng-if="vm.category.isNew == true"><i class="icon-plus"></i>Tạo mới</h4>
+        <h4 class="modal-title" data-ng-if="vm.category.isNew == false"><i class="fa fa-pencil-square-o"></i>Sửa</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="bold">Số vào sổ</label>
+                <input class="form-control" ng-model="vm.document.docCode" autofocus />
+            </div>
+            <div class="col-xs-6">
+                <label class="bold">Thể loại</label>
+                <ui-select ng-model="vm.document.category" sortable="true" close-on-select="true" style="width: 100% !important;">
+                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="category in vm.categorys | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="category.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-xs-12">
+                <label class="bold">Tiêu đề</label>
+                <input class="form-control" ng-model="vm.document.title" />
+            </div>
+            <div class="col-xs-12">
+                <label class="bold">Tóm tắt</label>
+                <textarea rows="4" class="form-control" ng-model="vm.document.summary"></textarea>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="bold">Tài liệu đính kèm</label>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="no-content1 display-block link" ng-disabled="vm.isDisabled()" ngf-select="vm.uploadFiles($file, $invalidFiles)" accept="*/*" ngf-max-size="100MB"> <i class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+                            </a>
+                        </div>
+                        <div class="col-sm-8 upload-description">Cho phép .jpg, .jpeg, .png, .bmp, .gif, .doc, .docx, .xls, .xlsx, .pdf, .rar, .zip tối đa 100MB</div>
+                        <div class="col-sm-12 margin-top-20 upload-list" ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+                            Có lỗi: <span class="bold" ng-if="vm.errorFile.$error == 'maxSize'">Kích
+	                                thước tệp tin không được lớn hơn
+	                                {{vm.errorFile.$errorParam}}</span> <span class="bold" ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp
+	                                tin {{vm.errorFile.name}} không hợp lệ.</span>
+                        </div>
+                        <div class="col-sm-12 form-group margin-top-20 margin-bottom-10">
+                            <table class="table table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tệp tin</th>
+                                        <th>Kích thước tệp tin</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="s in vm.document.attachments">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{s.file.name}}</td>
+                                        <td>{{(s.file.contentSize/1024).toFixed(0)}}KB</td>
+                                        <td>
+                                            <a class="text-danger margin-right-10" uib-tooltip="Xóa tệp tin" tooltip-trigger="mouseenter" href="#" data-ng-click="$parent.deleteFile($index)"><i class="icon-trash"></i></a>
+               								<a class="green-dark margin-right-10" uib-tooltip="Tải về" tooltip-trigger="mouseenter" href="#" data-ng-click="$parent.downloadFile($index)"><i class="icon-cloud-download"></i></a>
+                							<a class="green-dark" uib-tooltip="Xem tài liệu" tooltip-trigger="mouseenter" href="#" data-ng-click="$parent.viewFile($index)"><i class="icon-info"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-xs-12">
+				<!-- <div>
+					<input type="checkbox" style="margin: 2px 5px; float:left;" ng-model="vm.document.isLimitedRead" ng-checked="vm.document.isLimitedRead" aria-label="Toggle ngShow" >
+                	<label class="bold margin-top-0">Giới hạn người xem</label>
+               	</div> -->
+               	<div ng-show="vm.document.isLimitedRead">
+	                <ui-select multiple theme="bootstrap" ng-disabled="vm.isView" data-ng-model="vm.selectedUser" sortable="true" close-on-select="true" style="width: 100% !important;">
+	                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$item.username}}</ui-select-match>
+	                    <ui-select-choices repeat="user in vm.users | propsFilter: {username: $select.search}">
+	                        <div class="bold" ng-bind-html="user.username | highlight: $select.search"></div>
+	                    </ui-select-choices>
+	                </ui-select>
+           		</div>
+			</div>
+            <div class="col-xs-12">
+                <label class="bold">Nội dung</label>
+                <textarea rows="15" class="form-control" ng-model="vm.document.description"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+        <button type="button" ng-click="vm.save()" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+    </div>
+</div>
+</script>
+<script type="text/ng-template" id="view_document_modal.html">
+    <div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"><b>{{vm.document.title}}</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="text-justify">
+            <span class="bold">Nội dung: </span><label style="font-size: 15px">{{vm.document.description}}</label>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="row form-group" style="padding-top: 10px">
+                    <div class="divList col-md-12">
+                        <table cellpadding="12" class="table table-bordered table-hover">
+							<tr>
+                				<th colspan="3" class="text-center">Tài liệu liên quan</th>
+            				</tr>
+                            <tr ng-repeat="item in vm.ListAttachment">
+                                <td style="width:50px; text-align:center; padding:10px;">
+                                    <span ng-bind="$index + 1"></span>
+                                </td>
+                                <td style="padding:10px; cursor: pointer" ng-click="viewFileInBrowser(item)" title="Xem tài liệu">
+                                    <a class="bold"><span ng-bind="item.file.name"></span></a>
+                                </td>
+                                <td style="width: 102px; text-align:center; padding:10px;">
+                                    <a href="#" ng-click="vm.downloadDocument(item)" title="Tải tài liệu">
+                                        <i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="viewDocumentPopup.html">
+    <div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title">Tài liệu</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="row form-group" style="padding-top: 10px">
+                    <div class="divList col-md-12">
+                        <table cellpadding="12" class="table table-bordered table-hover">
+							<tr>
+                				<th colspan="3" class="text-center">Tài liệu liên quan</th>
+            				</tr>
+                            <tr ng-repeat="item in vm.ListAttachment">
+                                <td style="width:50px; text-align:center; padding:10px;">
+                                    <span ng-bind="$index + 1"></span>
+                                </td>
+                                <td style="padding:10px; cursor: pointer" ng-click="viewFileInBrowser(item)" title="Xem tài liệu">
+                                    <a class="bold"><span ng-bind="item.file.name"></span></a>
+                                </td>
+                                <td style="width: 102px; text-align:center; padding:10px;">
+                                    <a href="#" ng-click="vm.downloadDocument(item)" title="Tải tài liệu">
+                                        <i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold"><i class="icon-question "></i> Xóa</h4>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa bản ghi không?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+<style>
+a[disabled], fieldset[disabled] {
+	text-decoration: none;
+	font-weight: 400;
+	cursor: not-allowed;
+}
+
+.check>a {
+	font-weight: 700;
+}
+
+h3 {
+	font-weight: bold;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.btn-outline-secondary {
+	color: #6c757d;
+}
+
+.btn-outline-dark {
+	color: #343a40;
+}
+
+.btn1 {
+	font-size: 14px !important;
+	display: inline-block;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid black;
+	padding: 0.375rem 0.75rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+</style>

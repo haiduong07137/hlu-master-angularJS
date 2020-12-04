@@ -1,0 +1,198 @@
+<script>
+	function toogleMenu() {
+		console.log(this);
+		this.className = "treeview menu-open";
+	}
+</script>
+
+<style>
+.nomargin{
+	margin: 0px !important;
+}
+.page-list{
+	white-space: nowrap;
+}
+.fixed-table-pagination .pagination-info, .fixed-table-pagination .page-list{
+	float: left !important;
+}
+.fixed-table-pagination .page-list{
+	padding-top: 5px;
+}
+.isDisabled > a {
+  color: currentColor;
+  cursor: not-allowed;
+  /* opacity: 0.5; */
+  text-decoration: none;
+}
+
+.isDisabled > a > i {
+    color: #757C7F;
+}
+.main-sidebar-cus {
+	padding-top: 0px;
+	min-height: 100%;
+	width: 100%;
+	z-index: 810;
+	-webkit-transition: -webkit-transform .3s ease-in-out, width .3s
+		ease-in-out;
+	-moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
+	-o-transition: -o-transform .3s ease-in-out, width .3s ease-in-out;
+	transition: transform .3s ease-in-out, width .3s ease-in-out;
+}
+a {
+    background-color: transparent;
+}
+.sidebar-menu, .main-sidebar-cus .user-panel, .sidebar-menu>li.header {
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.sidebar-menu>li>a {
+	padding: 12px 5px 12px 15px;
+	display: block;
+}
+
+.sidebar-menu>li>a {
+	border-left: 3px solid transparent;
+}
+
+.sidebar-menu>li.active>a {
+	border-left-color: #3c8dbc;
+}
+
+.sidebar-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wrapper, .main-sidebar-cus, .left-side {
+	background-color: #222d32;
+}
+
+.sidebar-menu>li:hover>a, .sidebar-menu>li.active>a, .sidebar-menu>li.menu-open>a
+	{
+	color: #fff;
+	background: #1e282c;
+}
+
+.sidebar-menu .treeview-menu>li>a {
+	color: #8aa4af;
+	/* sơn sửa màu */
+	background-color: #3059a5; 
+}
+
+.sidebar-menu .treeview-menu>li.active>a, .sidebar-menu .treeview-menu>li>a:hover
+	{
+	color: #fff;
+}
+</style>
+
+<script>
+	function letterIn() {
+		console.log("123");
+		var x = document.getElementById("letterIn");
+		if (x.className.indexOf("active") == -1) {
+			x.className += " active";
+		} else {
+			x.className = x.className.replace(" active", "");
+		}
+	}
+
+	function letterOut() {
+		console.log("456");
+		var x = document.getElementById("letterOut");
+		if (x.className.indexOf("active") == -1) {
+			x.className += " active";
+		} else {
+			x.className = x.className.replace(" active", "");
+		}
+	}
+
+	function letterSetting() {
+		console.log("789");
+		var x = document.getElementById("letterSetting");
+		if (x.className.indexOf("active") == -1) {
+			x.className += " active";
+		} else {
+			x.className = x.className.replace(" active", "");
+		}
+	}
+	
+	$(".treeview-menu li a").click(function() {
+		console.log("0");
+	    $(this).parent().addClass('selected').siblings().removeClass('selected');
+
+	    });
+</script>
+
+<div class="main-sidebar-cus">
+	<section class="sidebar">
+		<ul class="sidebar-menu tree" data-widget="tree">
+			<li id="letterIn" class="treeview menu-open active"><a onclick="letterIn()">
+					<i class="fa fa-dashboard"></i> <span> Văn bản đến </span> <span
+					class="pull-right-container"> <i
+						class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<ul class="treeview-menu">
+					<li ng-if="vm.hasClerkRole"><a href="#/edit_letter_in"><i class="fa fa-angle-right"></i> Thêm mới văn bản đến </a></li>
+					<li><a href="#/new_letter_in"><i class="fa fa-angle-right"></i> Văn bản mới vào sổ </a></li>
+					<li><a href="#/thread_letter_in"><i class="fa fa-angle-right"></i> Chờ phân luồng </a></li>
+					<li><a href="#/wait_letter_in"><i class="fa fa-angle-right"></i> Văn bản chờ giao xử lý </a></li>
+					<li><a href="#/process_letter_in"><i class="fa fa-angle-right"></i> Văn bản đang xử lý </a></li>
+					<li><a href="#/finish_letter_in"><i class="fa fa-angle-right"></i> Văn bản đã hoàn thành </a></li>
+					<li><a href="#/letter_management"><i class="fa fa-angle-right"></i> Toàn bộ văn bản đến </a></li>
+				</ul></li>
+			<li id="letterOut" class="treeview menu-open active"><a onclick="letterOut()"> <i
+					class="fa fa-files-o"></i> <span> Văn bản đi </span> <span
+					class="pull-right-container"> <i
+						class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<!-- <ul class="treeview-menu">
+					<li><a href="#/">+ Dự thảo</a></li>
+					<li><a href="#/">+ Văn bản chờ xin ý kiến </a></li>
+					<li><a href="#/">+ Văn bản đang chờ xin ý kiến </a></li>
+					<li><a href="#/">+ Văn bản đang xin ý kiến </a></li>
+					<li><a href="#/">+ Văn bản đi đã phê duyệt </a></li>
+					<li><a href="#/">+ Văn bản đi đã xuất bản </a></li>
+					<li><a href="#/">+ Tra cứu, tìm kiếm</a></li>
+					<li><a href="#/">+ Báo cáo thống kê </a></li>
+				</ul> -->
+				<ul class="treeview-menu">
+					<li ng-if="vm.hasClerkRole"><a href="#/edit_letter_out"><i class="fa fa-angle-right"></i> Thêm mới văn bản đi</a></li>
+					<li><a href="#/list_letter_out"><i class="fa fa-angle-right"></i> Văn bản chờ phát hành </a></li>
+					<li><a href="#/finish_letter_out"><i class="fa fa-angle-right"></i> Toàn bộ văn bản đi </a></li>
+				</ul>
+			</li>	
+			<li id="letterSetting" class="treeview menu-open" ng-if="isSystemRight"><a onclick="letterSetting()"> <i
+					class="fa fa-dashboard"></i> <span> Thiết lập hệ thống </span> <span
+					class="pull-right-container"> <i
+						class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<ul class="treeview-menu">
+					<li><a href="#/document_book_group_letter_in"><i class="fa fa-angle-right"></i> Nhóm sổ văn bản</a></li>
+					<li><a href="#/document_book_letter_in"><i class="fa fa-angle-right"></i> Sổ văn bản</a></li>
+					<!-- <li><a href="#/task_flow_letter_in"><i class="fa fa-angle-right"></i> Quy trình xử lý văn bản </a></li> -->
+					<li><a href="#/document_type_letter_in"><i class="fa fa-angle-right"></i> Loại văn bản </a></li>
+					<li><a href="#/document_field_letter_in"><i class="fa fa-angle-right"></i> Lĩnh vực văn bản </a></li>
+					<li><a href="#/document_priority_letter_in"><i class="fa fa-angle-right"></i> Độ khẩn</a></li>
+					<li><a href="#/document_security_level_letter_in"><i class="fa fa-angle-right"></i>	Độ mật</a></li>
+				</ul></li>
+		</ul>
+	</section>
+</div>
+<style>
+.portlet-body > .row > .col-md-3 {
+    width: 235px;
+    padding: 0;
+    margin-top: -20px;
+    float: left;
+    margin-right: -100%;
+}
+.sidebar-menu .treeview-menu {
+    padding: 0px 0px;
+}
+</style>

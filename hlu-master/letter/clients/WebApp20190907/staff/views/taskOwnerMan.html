@@ -1,0 +1,110 @@
+<style>
+	
+</style>
+<div class="panel panel-default" style="border: solid 1px #cddbd1;">
+	<div class="panel-heading text-center">Thông tin chính</div>
+	<div class="panel-body">
+		<div class="row"
+			ng-if="vm.taskOwner == null || vm.taskOwner.id == null">
+			<div class="col-md-12 text-center" style="margin-top: 5px">
+				<label class="bold">Chưa tạo chức vụ hành chính click để tạo
+					mới</label>
+				<button class="btn btn-primary btn-circle"
+					ng-click="vm.createTaskOwner()">Tạo mới</button>
+			</div>
+		</div>
+
+		<div class="row"
+			ng-if="vm.taskOwner != null && vm.taskOwner.id != null">
+			<div class="col-md-6" style="margin-top: 5px">
+				<label class="bold">Chủ chức vụ:</label> <input
+					style="font-size: 18px" class="form-control" readonly
+					ng-model="vm.taskOwner.displayName">
+			</div>
+			<div class="col-md-6" style="margin-top: 5px">
+				<label class="bold">Parent:</label> <input style="font-size: 18px"
+					class="form-control" readonly
+					ng-model="vm.taskOwner.parent.displayName">
+			</div>
+		</div>
+
+		<div class="col-md-8 col-md-offset-2" style="padding: 20px 0px;">
+			<div class="col-md-6">
+				<ui-select ng-model="vm.userTaskOwner.role" on-select="vm.onSelect"
+					sortable="true" close-on-select="true"> <ui-select-match
+					allow-clear="true" placeholder="Xin mời chọn role...">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices
+					repeat="role in vm.taskRoles  | propsFilter: {name: $select.search}">
+				<div class="bold"
+					ng-bind-html="role.name | highlight: $select.search"></div>
+				</ui-select-choices> </ui-select>
+			</div>
+			<div class="col-md-2" style=" padding-top: 3px;">
+				<a ng-if="vm.addNew" class="btn btn-primary btn-circle" ng-click="vm.saveUserTaskOwner(true)"><i class="fa fa-plus">Thêm </i></a> 
+				<a ng-if="!vm.addNew" class="btn btn-success btn-circle" ng-click="vm.saveUserTaskOwner(false)"><i class="fa fa-check">Sửa </i></a> 
+				<a ng-if="!vm.addNew" class="btn btn-danger btn-circle"	ng-click="vm.cancelProcessUserTaskOwner()"><i class="fa fa-times"> Hủy </i></a>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top: 10px"
+			ng-if="vm.taskOwner != null && vm.taskOwner.id != null">
+			<div class="col-md-8 col-md-offset-2">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<!-- <th class="bold" colspan="3" rowspan="1">Username - Role trực thuộc</th> -->
+							<th class="bold">Username</th>
+							<th class="bold">Role trực thuộc</th>
+							<th class="bold">Thao tác</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!-- <tr>
+                           <td>User</td>
+                           <td>Role</td>
+                           <td>Thao tác</td>
+                       </tr> -->
+						<tr
+							ng-if="vm.taskOwner.userTaskOwners == null || vm.taskOwner.userTaskOwners.length <= 0">
+							<td colspan="3" rowspan="1" class="text-center">(Chưa có bản
+								ghi nào)</td>
+						</tr>
+						<tr ng-repeat="e in vm.taskOwner.userTaskOwners">
+							<td class="text-center">{{e.user.username}}</td>
+							<td class="text-center">{{e.role.name}}</td>
+							<td class="text-center"><a class="btn btn-info btn-circle"
+								ng-click="vm.editUserTaskOwner(e)"><i class="icon-pencil">
+										Sửa </i></a> <a class="btn btn-danger btn-circle"
+								ng-click="vm.deleteUserTaskOwner(e.id)"><i
+									class="fa fa-trash"> Xóa </i></a></td>
+						</tr>
+						<!-- <tr>
+                           <td style="width:40%">
+                               <div class="input-group" style="width: 100%">
+                                   <input readonly style="padding-left:5px;font-size: 18px;" readonl data-ng-model="vm.userTaskOwner.user.username" placeholder="Click để chọn user" type="text" class="form-control"/>
+                                   <div class="input-group-btn">
+                                       <button ng-click="vm.selectUser()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>Chọn</button>
+                                   </div>
+                               </div>
+                           </td>
+                           <td>
+                               <ui-select ng-model="vm.userTaskOwner.role" on-select="vm.onSelect" sortable="true" close-on-select="true">
+                                   <ui-select-match allow-clear="true" placeholder="Xin mời chọn role...">{{$select.selected.name}}</ui-select-match>
+                                   <ui-select-choices repeat="role in vm.taskRoles  | propsFilter: {name: $select.search}">
+                                       <div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+                                   </ui-select-choices>
+                               </ui-select>
+                           </td>
+                           <td>
+                               <a ng-if="vm.addNew" class="btn btn-primary btn-circle" ng-click="vm.saveUserTaskOwner(true)"><i class="fa fa-plus"></i></a>
+                               <a ng-if="!vm.addNew" class="btn btn-success btn-circle" ng-click="vm.saveUserTaskOwner(false)"><i class="fa fa-check"></i></a>
+                               <a ng-if="!vm.addNew" class="btn btn-danger btn-circle" ng-click="vm.cancelProcessUserTaskOwner()"><i class="fa fa-times"></i></a>
+                           </td>
+                       </tr> -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+<div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"><i class="fa fa-user"></i> Chọn TaskOwner</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row margin-top-10 margin-bottom-10">
+            <div class="col-md-6 text-right">
+                <div class="input-group">
+                    <input type="text" data-ng-model="vm.textSearch" class="form-control" ng-keyup="vm.enterSearchCode($event)" placeholder="click chọn để tìm kiếm" name="search">
+                    <div class="input-group-btn">
+                        <button ng-click="vm.searchByName()" class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <!-- <th>Thao tác</th> -->
+                <th>Tên vị trí</th>
+                <th>Loại vị trí</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="taskOwner in vm.listTaskOwner">
+                <td><input type="checkbox" ng-value="vm.isChecked(taskOwner)" ng-click="vm.selectedTaskOwner(taskOwner)"></td>
+                <!-- <td>{{taskOwner.username}}</td> -->
+                <td>{{taskOwner.displayName}}</td>
+                <td>{{vm.getOwnerType(taskOwner.ownerType, "name")}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-md-12 text-center">
+            <ul max-size="5" uib-pagination total-items="vm.totalItemsSearch" items-per-page="vm.pageSizeSearch" ng-model="vm.pageIndexSearch" ng-change="pageChangedSearch()" class="pagination-sm" boundary-links="true"></ul>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="vm.removeParent()" class="btn btn-default" data-dismiss="modal">Không</button>
+        <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+    </div>
+</div>

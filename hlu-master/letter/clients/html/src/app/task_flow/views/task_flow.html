@@ -1,0 +1,128 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+    
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="btn-group pull-left margin-top-10 margin-bottom-10">
+                    <button class="btn btn-default" data-ng-click="vm.newTaskFlow()"><i class="fa fa-plus-circle"></i>Thêm mới</button>
+                    <!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deletetaskFlows()" data-ng-disabled="vm.selectedtaskFlows.length <= 0"><i class="fa fa-trash"></i>Xóa</button>-->
+                </div>
+                <table id="bsTableControlTaskFlow" bs-table-control="vm.bsTableControlTaskFlow"></table>
+                <!--<table class="table table-striped table-bordered table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Tên bước</th>-->
+                        <!--<th>Mã bước</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="e in vm.taskFlow.steps">-->
+                        <!--<td>{{e.step.name}}</td>-->
+                        <!--<td>{{e.step.code}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title" data-ng-if="vm.taskFlow.isNew == true"><i class="icon-plus"></i>Thêm quy trình xử lý</h4>
+            <h4 class="modal-title" data-ng-if="vm.taskFlow.isNew == false"><i class="fa fa-pencil-square-o"></i>Cập nhật quy trình xử lý</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="bold">Tên quy trình xử lý</label>
+                    <input class="form-control" ng-model="vm.taskFlow.name" />
+                </div>
+                <div class="col-xs-6">
+                    <label class="bold">Mã quy trình xử lý</label>
+                    <input class="form-control" ng-model="vm.taskFlow.code" autofocus />
+                </div>
+                <div class="col-xs-6">
+                    <label class="bold">Các bước</label>
+                    <ui-select ng-model="vm.step" on-select="vm.onSelect" sortable="true" close-on-select="true" style="width: 100% !important;">
+                        <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="step in vm.steps  | propsFilter: {name: $select.search}">
+                            <div class="bold" ng-bind-html="step.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <input id="autoCreate" ng-click="vm.autoCreateTaskFlowStep()" type="checkbox" ng-model="vm.autoCreate" autofocus />
+                    <label for="autoCreate">(Tự tạo các bước)</label>
+                </div>
+                <div class="col-xs-6" style="margin-top: 5px">
+                    <br>
+                    <button class="btn btn-primary" ng-click="vm.addStep()">Thêm</button>
+                </div>
+                <div class="col-xs-12">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tên bước</th>
+                                <th>Mã bước</th>
+                                <th>Thứ tự</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="vm.taskFlow.steps != null && vm.taskFlow.steps.length > 0" ng-repeat="e in vm.taskFlow.steps">
+                                <td>{{e.step.name}}</td>
+                                <td>{{e.step.code}}</td>
+                                <td><input style="font-size: 18px" type="number" class="form-control" data-ng-model="e.orderIndex"></td>
+                                <td></td>
+                            </tr>
+                            <tr ng-if="vm.taskFlow.steps == null || vm.taskFlow.steps.length <= 0">
+                                <td colspan="4" rowspan="1" class="text-center">(Chưa có bản ghi nào)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="1">
+                                    <ui-select ng-model="vm.step" on-select="vm.onSelect" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                        <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                        <ui-select-choices repeat="step in vm.steps  | propsFilter: {name: $select.search}">
+                                            <div class="bold" ng-bind-html="step.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td colspan="1" rowspan="1">
+                                    <input type="number" class="form-control">
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-circle" ng-click="vm.addStep()">Thêm</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+            <button type="button" ng-click="$close('yes');" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>Xóa</h4>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa bản ghi đã chọn không?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->

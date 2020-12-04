@@ -1,0 +1,138 @@
+
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+    <!--<h3 class="page-title pull-left"><i class="icon-layers"></i>Danh mục Nhân viên</h3>-->
+    <!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+        <!--<li>-->
+            <!--<a href="#">Quản trị</a>-->
+            <!--<i class="fa fa-circle"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="#">Danh mục</a>-->
+            <!--<i class="fa fa-circle"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="#/Priority">Nhân viên</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+<!-- TA2 them 22/04/2018-->
+<!-- END PAGE HEADER-->
+
+
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+    
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" data-ng-click="vm.newPriority()"><i class="fa fa-plus-circle"></i>Thêm mới</button>
+                        	<button class="btn btn-danger margin-left-10" data-ng-click="vm.deletePriorities()" data-ng-disabled="vm.selectedPriorities.length <= 0"><i class="fa fa-trash"></i>Xóa</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input ng-keypress="vm.pressEnterKey($event,vm.searchByCode)" type="text" data-ng-model="vm.textSearch" class="form-control" placeholder="Tìm kiếm ..." name="search">
+                            <div class="input-group-btn">
+                                <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="document_modal.html">
+    
+</script>
+<script  type="text/ng-template" id="edit_document_modal.html">
+<div modal-movable>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.isEdit==true" class="modal-title bold font-yellow-gold"> <span class="glyphicon glyphicon-pencil"></span>Sửa sự kiện</h4>
+    <h4 ng-if="vm.isEdit==false" class="modal-title bold font-yellow-gold"><i class="fa fa-plus-circle"></i>Thêm sự kiện</h4>
+</div>
+<div class="modal-body">
+    <div class="box-body box-profile">
+        <div class="box-body">
+            <div class="row form-group">    
+                <div class="panel panel-default" style="border: solid 1px #cddbd1;">
+                    <!--  ================= Document type information =================== -->
+                    <!--  ================================================ -->
+                    <div class="panel-heading text-center">Thông tin sự kiện ưu tiên</div>
+                    <div class="panel-body">
+                        <div class="row form-group">
+                            
+                            <div class="col-md-12">
+                                	<div class="row form-group">
+                                        <div class="col-md-12">
+	                                        <label class="bold" style="width:20%;float:left;margin-top:10px;">Tên </label>
+	                                        <input style="width:70%;" data-ng-model="vm.priority.name" type="text" class="form-control"  autofocus>
+                                    	</div>
+                                        
+                                        <div class="col-md-12" style="margin-top:30px;" >
+                                            <label class="bold"  style="width:20%;float:left;margin-top:10px;">Miêu tả </label>
+                                            <input  style="width:70%;"  data-ng-model="vm.priority.description" ng-change="vm.nameChange()" type="text" class="form-control" >
+                                        </div>
+
+										<div class="col-md-12" style="margin-top:30px;" >
+                                            <label class="bold"  style="width:20%;float:left;margin-top:10px;">Thứ tự ưu tiên </label>
+                                            <input  style="width:70%;"  data-ng-model="vm.priority.priority" ng-change="vm.nameChange()" type="number" class="form-control" >
+                                        </div>
+												
+
+                                	</div>
+                            </div>
+                        </div>                               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+    <button type="button" ng-click="vm.Save('yes')" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+</div>
+</div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h2 class="modal-title"> <span  class="glyphicon glyphicon-trash"></span> Xóa</h2>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa <span ng-cloak>{{vm.selectedPrioritiess.length}}</span> bản ghi đã chọn không?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-danger" data-dismiss="modal" autofocus>Xóa</button>
+        </div>
+    </div>
+</script>
+
+<style>
+    .modal-lg {
+        width: 70%;
+    }
+    @media only screen and (max-width: 768px){
+        .modal-lg {
+            width: 100%;
+        }
+    }
+</style>
+<!-- BEGIN MAIN JS -->

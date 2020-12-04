@@ -1,0 +1,151 @@
+<div class="nav-side-menu">
+	<div class="menu-list">
+		<ul id="menu-content" class="menu-content collapse out">
+			<!--LETTER IN-->
+			<li style="background-color: #273C51" ng-if="vm.isShowLetterIn == true" ng-click="vm.hideLetterIn(0,0,1)">
+				<div class="row">
+					<div class="col-md-10">
+						<a> <i class="fa fa-book fa-lg"></i>
+							{{vm.documentsRecieved[0].name}}
+						</a>
+					</div>
+					<div class="col-md-2">
+						<a> 
+							<i class="fa fa-caret-down"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<li style="background-color: #273C51"
+				ng-if="vm.isShowLetterIn == false" ng-click="vm.showLetterIn(0,0,1)">
+				<div class="row">
+					<div class="col-md-10">
+						<a> 
+							<i class="fa fa-book fa-lg"></i>
+							{{vm.documentsRecieved[0].name}}
+						</a>
+					</div>
+					<div class="col-md-2">
+						<a> 
+							<i class="fa fa-caret-up"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<li ng-class="{active: e.active}"
+				ng-repeat="e in vm.documentsRecieved"
+				ng-if="vm.isShowLetterIn == true && e.id > 0"
+				ng-click="vm.setStepProcessLetterIn(e.id,$index,e.stepIndex)">
+				<a> 
+					<i class="fa fa-caret-right"></i> 
+					{{e.name}}
+				</a>
+			</li>
+			<!--END LETTER IN-->
+
+			<!--LETTER OUT-->
+			<li style="background-color: #273C51"
+				ng-if="vm.isShowLetterOut == true"
+				ng-click="vm.hideLetterOut(0,0)">
+				<div class="row">
+					<div class="col-md-10">
+						<a> 
+							<i class="fa fa-book fa-lg"></i>
+							{{vm.documentsTranfered[0].name}}
+						</a>
+					</div>
+					<div class="col-md-2">
+						<a> 
+							<i class="fa fa-caret-down"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<li style="background-color: #273C51"
+				ng-if="vm.isShowLetterOut == false"
+				ng-click="vm.showLetterOut(0,0)">
+				<div class="row">
+					<div class="col-md-10">
+						<a> 
+							<i class="fa fa-book fa-lg"></i>
+							{{vm.documentsTranfered[0].name}}
+						</a>
+					</div>
+					<div class="col-md-2">
+						<a> 
+							<i class="fa fa-caret-up"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<li ng-class="{active: e.active}" ng-repeat="e in vm.documentsTranfered"
+				ng-if="vm.isShowLetterOut == true && e.id > 0"
+				ng-click="vm.setStepProcessLetterOut(e.id,$index)">
+				<a> 
+					<i class="fa fa-caret-right"></i> {{e.name}}
+				</a>
+			</li>
+			<!--END LETTER OUT-->
+			<!--SHOW CONFIG-->
+			<!--<li style="background-color: #273C51"-->
+				<!--ng-if="vm.isShowConfig == true"-->
+				<!--ng-click="vm.hideConfig(0,0)">-->
+				<!--<div class="row">-->
+					<!--<div class="col-md-10">-->
+						<!--<a>-->
+							<!--<i class="fa fa-book fa-lg"></i>-->
+							<!--{{vm.documentsConfig[0].name}}-->
+						<!--</a>-->
+					<!--</div>-->
+					<!--<div class="col-md-2">-->
+						<!--<a>-->
+							<!--<i class="fa fa-caret-down"></i>-->
+						<!--</a>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</li>-->
+			<!--<li style="background-color: #273C51"-->
+				<!--ng-if="vm.isShowConfig == false"-->
+				<!--ng-click="vm.showConfig(0,0)">-->
+				<!--<div class="row">-->
+					<!--<div class="col-md-10">-->
+						<!--<a>-->
+							<!--<i class="fa fa-book fa-lg"></i>-->
+							<!--{{vm.documentsTranfered[0].name}}-->
+						<!--</a>-->
+					<!--</div>-->
+					<!--<div class="col-md-2">-->
+						<!--<a>-->
+							<!--<i class="fa fa-caret-up"></i>-->
+						<!--</a>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</li>-->
+			<li style="background-color: #273C51"
+				ng-click="vm.isShowConfig=!vm.isShowConfig;vm.isShowLetterOut=false;vm.isShowLetterIn=false;vm.showConfig(0,0);">
+				<div class="row">
+					<div class="col-md-10">
+						<a>
+							<i class="fa fa-book fa-lg"></i>
+							{{vm.documentsConfig[0].name}}
+						</a>
+					</div>
+					<div class="col-md-2">
+						<a>
+							<i class="fa fa-caret-up" ng-if="vm.isShowConfig"></i>
+							<i class="fa fa-caret-down" ng-if="!vm.isShowConfig"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<li ng-class="{active: e.active}" ng-repeat="e in vm.documentsConfig"
+				ng-if="vm.isShowConfig == true && e.id > 0"
+				ng-click="vm.setProcessShowConfig(e.id,$index,e.stepIndex)">
+				<a> 
+					<i class="fa fa-caret-right"></i> {{e.name}}
+				</a>
+			</li>
+			<!--END SHOW CONFIG-->
+		</ul>
+	</div>
+</div>

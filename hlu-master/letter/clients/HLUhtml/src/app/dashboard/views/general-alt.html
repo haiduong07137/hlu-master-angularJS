@@ -1,0 +1,85 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row bordered-container dashboard-page">
+    <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/letter_management">
+                <i class="fa fa-book"></i>
+                <i class="fa fa-book"></i>
+                <span>Quản lý công văn</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/news">
+                <i class="fa fa-newspaper-o"></i>
+                <i class="fa fa-newspaper-o"></i>
+                <span>Tin tức & sự kiện</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/calendar">
+                <i class="icon-calendar"></i>
+                <i class="icon-calendar"></i>
+                <span>Lịch tuần</span>
+            </a>
+        </div>
+    </div>
+    <div ng-if="isAdmin" class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/staff">
+                <i class="fa fa-address-card"></i>
+                <i class="fa fa-address-card"></i>
+                <span>Nhân sự</span>
+            </a>
+        </div>
+    </div>
+    <!-- <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/work_managerment">
+                <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
+                <span>Quản lý công việc</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/project_managerment">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <span>Quản lý dự án</span>
+            </a>
+        </div>
+    </div> -->
+    <!-- <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/document_managerment">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <span>Quản lý tài liệu</span>
+            </a>
+        </div>
+    </div> -->
+    <div ng-if="isAdmin" class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/category">
+                <i class="fa fa-list"></i>
+                <i class="fa fa-list"></i>
+                <span>Danh mục</span>
+            </a>
+        </div>
+    </div>
+    <div ng-if="isAdmin" class="col-md-3 col-sm-4 col-xs-12 margin-top-10">
+        <div class="dash-let">
+            <a href="#/dashboard/settings">
+                <i class="icon-equalizer"></i>
+                <i class="icon-equalizer"></i>
+                <span>Hệ thống</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->

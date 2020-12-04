@@ -1,0 +1,300 @@
+<div class="cus-form-hidden">
+	<label class="bold" style="margin-top:0px">Thông tin khác</label>
+	<input type="checkbox" ng-click="ShowOrHide()" ng-model="checked"
+		style="vertical-align: text-top; margin-left:10px;" aria-label="Toggle ngShow"><br />
+	<div class="check-element animate-show-hide" ng-show="checked">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-1">
+					<label class="bold nomargin">Lĩnh vực</label>
+				</div>
+				<div class="col-md-3">
+					<ui-select ng-model="vm.letterIn.letterDocField" sortable="true"
+						close-on-select="true" ng-disabled="vm.isDisabled()"
+						style="width: 100% !important;"> <ui-select-match
+						allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.name}} </ui-select-match> <ui-select-choices
+						repeat="so in vm.documentFields  | propsFilter: {name: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.name | highlight: $select.search"></div>
+					</ui-select-choices> </ui-select>
+				</div>
+
+				<div class="col-md-1">
+					<label class="bold pull-left nomargin">Hạn trả lời</label>
+				</div>
+				<div class="col-md-3">
+					<input class="form-control" style="font-size: 18px"
+						ng-model="vm.letterIn.expiredDate" type="text"
+						ng-disabled="vm.isDisabled()" my-date-picker>
+				</div>
+
+				<div class="col-md-1">
+					<label class="bold nomargin">Độ khẩn</label>
+				</div>
+				<div class="col-md-3">
+					<ui-select ng-model="vm.letterIn.letterDocPriority" sortable="true"
+						close-on-select="true" ng-disabled="vm.isDisabled()"
+						style="width: 100% !important;"> <ui-select-match
+						allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.name}} </ui-select-match> <ui-select-choices
+						repeat="so in vm.documentPriorities  | propsFilter: {name: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.name | highlight: $select.search"></div>
+					</ui-select-choices> </ui-select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-2">
+					<label class="bold pull-left nomargin">Đường công văn</label>
+				</div>
+				<div class="col-md-2">
+					<ui-select ng-model="vm.letterIn.letterLine" sortable="true"
+						ng-disabled="vm.isDisabled()" close-on-select="true"
+						style="width: 100% !important;"> <ui-select-match
+						allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.name}} </ui-select-match> <ui-select-choices
+						repeat="so.id as so in vm.letterLines  | propsFilter: {name: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.name | highlight: $select.search"></div>
+					</ui-select-choices> </ui-select>
+				</div>
+			
+				<div class="col-md-1">
+					<label class="bold nomargin">Độ mật</label>
+				</div>
+				<div class="col-md-3">
+					<ui-select ng-model="vm.letterIn.letterDocSecurityLevel"
+						sortable="true" close-on-select="true"
+						ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+					<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.name}} </ui-select-match> <ui-select-choices
+						repeat="so in vm.documentSecurityLevels  | propsFilter: {name: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.name | highlight: $select.search"></div>
+					</ui-select-choices> </ui-select>
+				</div>
+
+				<div class="col-md-1">
+					<label class="bold nomargin">Loại bản lưu</label>
+				</div>
+				<div class="col-md-3">
+					<ui-select ng-model="vm.letterIn.saveLetterType" sortable="true"
+						close-on-select="true" ng-disabled="vm.isDisabled()"
+						style="width: 100% !important;"> <ui-select-match
+						allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.name}} </ui-select-match> <ui-select-choices
+						repeat="so.id as so in vm.saveLetterTypes  | propsFilter: {name: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.name | highlight: $select.search"></div>
+					</ui-select-choices> </ui-select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-disabled="vm.isDisabled()">
+			<div class="col-md-12">
+				<div class="col-md-2">
+					<label class="bold nomargin" for="inlineCheckbox2" style="float: left;">Phân luồng</label> 
+						<input ng-disabled="vm.isDisabled()" type="checkbox" ng-click="forwardTo()"
+						 style="margin: 10px; float: left;" ng-model="check"
+						aria-label="Toggle ngShow" ><br />
+	
+				</div>
+				<div class="col-md-2" ng-show="check">
+					<!--  <div class="col-md-2" style="margin-right: 13px;">
+						<label class="bold nomargin">Chuyển cho </label>
+					</div> -->
+					<ui-select ng-model="vm.forwarderId" sortable="true" ng-disabled="vm.isView"
+						close-on-select="true" style="width: 100% !important;">
+					<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+					{{$select.selected.displayName}} </ui-select-match> <ui-select-choices
+						repeat="so.id as so in vm.taskOwnersForwarders  | propsFilter: {displayName: $select.search}">
+					<div class="bold"
+						ng-bind-html="so.displayName | highlight: $select.search">
+					</div>
+					<!-- <div class="col-md-2">
+						<label class="bold nomargin">Gửi thông báo: </label>
+					</div>
+					<div class="col-md-3" style="padding-left: 0px;">
+						<input class="form-control" type="text" ng-disabled="vm.isDisabled()">
+					</div> -->
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-1">
+					<label class="bold nomargin">Ghi chú</label>
+				</div>
+				<div class="col-md-11">
+					<textarea style="font-size: 18px" ng-disabled="vm.isDisabled()"
+						class="form-control textarea-size"
+						ng-model="vm.letterIn.description"></textarea>
+					<div ng-if="vm.letterIn.description.length > 1000">
+						<small class="text-danger">Nội dung ghi chú không được quá
+							1000 ký tự</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label class="bold" for="exampleInputEmail1">Thông tin khác</label>
+			<input type="checkbox" ng-click="ShowOrHide()" ng-model="checked"
+				aria-label="Toggle ngShow"><br />
+			<div class="check-element animate-show-hide" ng-show="checked">
+				<div class="row">
+					 ng-if="vm.isShowDetail"
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="bold">Lĩnh vực</label>
+							<ui-select ng-model="vm.letterIn.letterDocField" sortable="true"
+								close-on-select="true" ng-disabled="vm.isDisabled()"
+								style="width: 100% !important;"> <ui-select-match
+								allow-clear="true" placeholder="Xin mời chọn...">
+							{{$select.selected.name}} </ui-select-match> <ui-select-choices
+								repeat="so in vm.documentFields  | propsFilter: {name: $select.search}">
+							<div class="bold"
+								ng-bind-html="so.name | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label class="bold">Hạn trả lời</label> <input
+							class="form-control" style="font-size: 18px"
+							ng-model="vm.letterIn.expiredDate" type="text"
+							ng-disabled="vm.isDisabled()" my-date-picker>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label class="bold">Độ khẩn</label>
+						<ui-select ng-model="vm.letterIn.letterDocPriority"
+							sortable="true" close-on-select="true"
+							ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+						<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+						{{$select.selected.name}} </ui-select-match> <ui-select-choices
+							repeat="so in vm.documentPriorities  | propsFilter: {name: $select.search}">
+						<div class="bold"
+							ng-bind-html="so.name | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+					</div>
+					<div class="col-sm-6">
+						<label class="bold">Độ mật</label>
+						<ui-select ng-model="vm.letterIn.letterDocSecurityLevel"
+							sortable="true" close-on-select="true"
+							ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+						<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+						{{$select.selected.name}} </ui-select-match> <ui-select-choices
+							repeat="so in vm.documentSecurityLevels  | propsFilter: {name: $select.search}">
+						<div class="bold"
+							ng-bind-html="so.name | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label class="bold">Đường công văn</label>
+						<ui-select ng-model="vm.letterIn.letterLine" sortable="true"
+							ng-disabled="vm.isDisabled()" close-on-select="true"
+							style="width: 100% !important;"> <ui-select-match
+							allow-clear="true" placeholder="Xin mời chọn...">
+						{{$select.selected.name}} </ui-select-match> <ui-select-choices
+							repeat="so.id as so in vm.letterLines  | propsFilter: {name: $select.search}">
+						<div class="bold"
+							ng-bind-html="so.name | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+					</div>
+					<div class="col-sm-6">
+						<label class="bold">Loại bản lưu</label>
+						<ui-select ng-model="vm.letterIn.saveLetterType" sortable="true"
+							close-on-select="true" ng-disabled="vm.isDisabled()"
+							style="width: 100% !important;"> <ui-select-match
+							allow-clear="true" placeholder="Xin mời chọn...">
+						{{$select.selected.name}} </ui-select-match> <ui-select-choices
+							repeat="so.id as so in vm.saveLetterTypes  | propsFilter: {name: $select.search}">
+						<div class="bold"
+							ng-bind-html="so.name | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<label class="bold">Ghi chú</label>
+						<textarea style="font-size: 18px" ng-disabled="vm.isDisabled()"
+							class="form-control textarea-size"
+							ng-model="vm.letterIn.description"></textarea>
+						<div ng-if="vm.letterIn.description.length > 1000">
+							<small class="text-danger">Nội dung ghi chú không được
+								quá 1000 ký tự</small>
+						</div>
+					</div>
+
+				</div>
+				<div class="row" ng-if="!vm.isView">
+					<div class="col-sm-6">
+						<input class="form-check-input" type="checkbox"
+							ng-disabled="vm.isDisabled()" id="inlineCheckbox2"
+							ng-click="vm.forwardTo()" data-ng-model="vm.isForward"> <label
+							class="form-check-label bold" for="inlineCheckbox2">(Chuyển
+							để phân luồng)</label>
+					</div>
+
+				</div>
+				<div class="row" ng-if="!vm.isView">
+					<div class="col-sm-12" ng-if="vm.isForward">
+						<label class="bold">Chuyển cho</label>
+						<ui-select ng-model="vm.forwarderId" sortable="true"
+							close-on-select="true" style="width: 100% !important;">
+						<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+						{{$select.selected.displayName}} </ui-select-match> <ui-select-choices
+							repeat="so.id as so in vm.taskOwnersForwarders  | propsFilter: {displayName: $select.search}">
+						<div class="bold"
+							ng-bind-html="so.displayName | highlight: $select.search">
+						</div>
+						</ui-select-choices> </ui-select>
+						<label class="bold">Gửi thông báo</label> <input
+							class="form-control" type="text">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ -->
+<style>
+.animate-show-hide.ng-hide {
+	opacity: 0;
+}
+
+.animate-show-hide.ng-hide-add, .animate-show-hide.ng-hide-remove {
+	transition: all linear 0.5s;
+}
+
+.check-element {
+	border: 1px solid black;
+	opacity: 1;
+	padding: 10px;
+}
+.cus-form-hidden label {
+	padding-top: 8px;
+}
+
+.cus-form-hidden .row .col-md-2 {
+	text-align: right;
+}
+
+.cus-form-hidden .row {
+	padding-top: 10px;
+}
+</style>

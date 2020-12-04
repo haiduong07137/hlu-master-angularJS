@@ -1,0 +1,131 @@
+<div class="modal-body" style="padding-top:0px;padding-bottom:0px;">
+	    <div class="box-body box-profile" style="padding-bottom:0px;">
+	        <div class="box-body">
+	            <div class="row form-group">
+	                <uib-tabset class="text-bold" active="activeForm">
+                            <div index="0" heading="Thêm sửa tiểu sử gia đình">
+                                    <!-- <div class="panel panel-default" style="border: solid 1px #cddbd1;"> -->
+                                        <!--  ================= Personal information =================== -->
+                                        <!--  ================================================ -->
+                                        <div class="panel-heading text-left">Thêm sửa tiểu sử gia đình</div>
+                                        <div class="panel-body" style="padding-bottom:0px;padding-top:10px">
+                        
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-2">
+                                                            <label class="bold" >Mã công chức: </label>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input data-ng-model="vm.staff.staffCode"  type="text" class="form-control" >
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="bold">Họ và tên: </label>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input data-ng-model="vm.familyRelationship.fullName"  type="text" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                                <label class="bold">Ngày sinh: </label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input data-ng-model="vm.familyRelationship.birthDate"  type="text" class="form-control" my-date-picker>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-2">
+                                                            <label class="bold">Nghề nghiệp: </label>       
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input data-ng-model="vm.familyRelationship.profession"  type="text" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="bold">Địa chỉ: </label>       
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input data-ng-model="vm.familyRelationship.address"  type="text" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="bold">Mô tả: </label>       
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input data-ng-model="vm.familyRelationship.description"  type="text" class="form-control">
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="row form-group">
+	                                                   	<button class="btn btn-primary pull-right" ng-if="vm.staff.isNew" ng-click="vm.saveFamilyRelationship()">Thêm</button>
+	                                                   	<button class="btn btn-primary pull-right" ng-if="!vm.staff.isNew" ng-click="vm.saveFamilyRelationship()">Lưu</button>
+                                                    </div> 
+                                                    <!-- <table id="bsTableAgreementControl  " bs-table-control="vm.bsTableAgreementControl"></table> -->
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="row form-group" style="margin-top:13px;">
+                                                <div class="col-md-4">
+                                                    <label class="bold">Danh sách tiểu sử gia đình </label>
+                                                </div>
+                                                <div class="col-md-12">												
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th>
+                                                                Thao tác
+                                                            </th>
+                                                            <th>
+                                                                Mã công chức
+                                                            </th>
+                                                            <th>
+                                                               Họ và tên														
+                                                            </th>
+                                                            <th>
+                                                                Ngày sinh															
+                                                            </th>
+                                                            <th>
+                                                                Nghề nghiệp													
+                                                            </th>
+                                                            <th>
+                                                                Địa chỉ
+                                                            </th>
+                                                            
+                                                        </tr>
+                                                        <tr ng-repeat="family in vm.familyRelationships">
+                                                            <td>
+                                                                 <a title="Chỉnh sửa" ng-click="editFamilyRelationship(family)"><i class="fa fa-fw fa-edit"></i></a>
+                                                                <a title="Xóa" ng-click="removeFamilyRelationship(family.id)"><i class="fa fa-trash margin-right-5"></i></a>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                {{family.staff.staffCode}}	
+                                                            </td>
+                                                            <td>
+                                                                {{family.fullName }}
+                                                            </td>
+                                                            <td>
+                                                                {{family.birthDate | date:'dd/MM/yyyy'}}
+                                                            </td>
+                                                            <td>
+                                                                {{family.profession }}
+                                                            </td>
+                                                            <td>
+                                                                {{family.address}}
+                                                            </td>
+                                                            <td>
+                                                                {{family.description}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </uib-tabset>   
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

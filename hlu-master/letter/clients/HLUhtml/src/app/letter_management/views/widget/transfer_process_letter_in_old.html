@@ -1,0 +1,285 @@
+<!-- Người phân luồng chọn người giao xử lý văn bản -->
+<div class="row bordered-container">
+    <div submenu-toggler><i class="fa fa-long-arrow-right"></i></div>
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <!-- <div class="portlet-title">
+				<div class="btn-group pull-left margin-top-10 margin-bottom-10">
+					<button class="btn btn-default" data-ng-click="vm.newDepartment()"><i class="fa fa-plus-circle"></i>Thêm mới</button>
+                  <button class="btn btn-default margin-left-10" data-ng-click="vm.importDepartment()"><i class="fa fa-cloud-upload"></i> Import</button>
+                     <button class="btn btn-default margin-left-10" data-ng-click="vm.updateLinePath()"><i class="fa fa-refresh"></i> Cập nhật đường dẫn</button>
+                     <a href="#" class="btn btn-default margin-left-10" file-name="'PhongBan.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Export</i></a>
+				</div>
+			</div> -->
+            <div class="portlet-body">
+                <div id="letter_container" class="row">
+                    <div class="col-md-3" ng-include="'letter_management/views/widget/side_bar.html'">
+                    </div>
+                    <div class="col-md-9 ">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Chờ giao xử lý văn bản</h3>
+                            </div>
+                            <div class="box-body" style="background-color: #FCFCFF">
+                                <div style="margin-top: 10px" class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">Tiêu đề văn bản</label>
+                                                    <textarea style="font-size: 18px" class="form-control textarea-size" ng-model="vm.letterIn.title" ng-disabled="vm.isDisabled()"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">Số ký
+                                                        hiệu văn bản</label> <input style="font-size: 18px" class="form-control" type="text" ng-model="vm.letterIn.docOriginCode" ng-disabled="vm.isDisabled()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">Phúc
+                                                        đáp công văn</label> <input style="font-size: 18px" class="form-control" ng-model="vm.letterIn.refDocOriginCode" type="text" ng-disabled="vm.isDisabled()">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="bold">Số đến theo sổ</label>
+                                                <input style="font-size: 18px" class="form-control" ng-disabled="vm.isDisabled()" ng-model="vm.letterIn.documentOrderNoByBook" type="number">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">Trích
+                                                        yếu</label>
+                                                    <textarea style="font-size: 18px" class="form-control textarea-size" ng-model="vm.letterIn.briefNote" ng-disabled="vm.isDisabled()"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">File
+                                                        đính kèm</label>
+                                                    <div class="row">
+                                                        <div class="row" ng-if="vm.letterIn.attachments.length > 0 && !vm.isDisabled()">
+                                                            <div class="col-md-12 margin-top-20">
+                                                                <table id="bsTableControl4Files" bs-table-control="vm.bsTableControl4Files">
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" ng-if="vm.letterIn.attachments.length > 0 && vm.isDisabled()">
+                                                            <div class="col-md-12 margin-top-20">
+                                                                <table id="bsTableControl4FilesProcess" bs-table-control="vm.bsTableControl4FilesProcess">
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="bold" for="exampleInputEmail1">Thông
+                                                        tin khác</label>
+                                                    <!-- <a ng-click="vm.showDetail()">Ẩn/hiện</a> -->
+                                                </div>
+                                            </div>
+                                            <!--  ng-if="vm.isShowDetail" -->
+                                            <div class="col-sm-4">
+                                                <label class="bold">Lĩnh vực</label>
+                                                <ui-select ng-model="vm.letterIn.letterDocField" sortable="true" close-on-select="true" ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+                                                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                        {{$select.selected.name}} </ui-select-match>
+                                                    <ui-select-choices repeat="so in vm.documentFields  | propsFilter: {name: $select.search}">
+                                                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="bold">Hạn trả lời</label> <input class="form-control" style="font-size: 18px" ng-model="vm.letterIn.expiredDate" type="text" ng-disabled="vm.isDisabled()" my-date-picker>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="bold">Độ khẩn</label>
+                                                <ui-select ng-model="vm.letterIn.letterDocPriority" sortable="true" close-on-select="true" ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+                                                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                        {{$select.selected.name}} </ui-select-match>
+                                                    <ui-select-choices repeat="so in vm.documentPriorities  | propsFilter: {name: $select.search}">
+                                                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="bold">Độ mật</label>
+                                                <ui-select ng-model="vm.letterIn.letterDocSecurityLevel" sortable="true" close-on-select="true" ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+                                                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                        {{$select.selected.name}} </ui-select-match>
+                                                    <ui-select-choices repeat="so in vm.documentSecurityLevels  | propsFilter: {name: $select.search}">
+                                                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="bold">Đường công văn</label>
+                                                <ui-select ng-model="vm.letterIn.letterLine" sortable="true" ng-disabled="vm.isDisabled()" close-on-select="true" style="width: 100% !important;">
+                                                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                        {{$select.selected.name}} </ui-select-match>
+                                                    <ui-select-choices repeat="so.id as so in vm.letterLines  | propsFilter: {name: $select.search}">
+                                                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="bold">Loại bản lưu</label>
+                                                <ui-select ng-model="vm.letterIn.saveLetterType" sortable="true" close-on-select="true" ng-disabled="vm.isDisabled()" style="width: 100% !important;">
+                                                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                        {{$select.selected.name}} </ui-select-match>
+                                                    <ui-select-choices repeat="so.id as so in vm.saveLetterTypes  | propsFilter: {name: $select.search}">
+                                                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label class="bold">Ghi chú</label>
+                                                <textarea style="font-size: 18px" ng-disabled="vm.isDisabled()" class="form-control textarea-size" ng-model="vm.letterIn.description"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default margin-top-10" style="border: solid 1px #cddbd1;">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <h4 class="bold text-center" style="font-size: 20px"><i class="fa fa-mail-forward" aria-hidden="true"></i> Phân luồng - Văn bản {{vm.letterIn.docOriginCode}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body" style="background-color: #FCFCFF">
+                                                <div style="margin-top: 10px" class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <table class="table add-new-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th style="width: 13%;">
+                                                                        <p class="bold">Lãnh đạo xử lý<span class="impor">*</span> </p>
+                                                                    </th>
+                                                                    <td style="width:50%" colspan="2" rowspan="1">
+                                                                        <ui-select ng-model="vm.assignerId" sortable="true" close-on-select="true">
+                                                                            <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                                                                {{$select.selected.displayName}}
+                                                                            </ui-select-match>
+                                                                            <ui-select-choices repeat="so.id as so in vm.taskOwnersAssigners  | propsFilter: {displayName: $select.search}">
+                                                                                <div class="bold" ng-bind-html="so.displayName | highlight: $select.search">
+                                                                                </div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </td>
+                                                                    <!-- <th>
+                                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3">
+                                                                    <label class="form-check-label" for="inlineCheckbox3">(Chuyển giao lãnh đạo giao xử lý)</label>
+                                                                    </th> -->
+                                                                    <!-- <td colspan="2" rowspan="1"></td> -->
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="bold">Nội dung<span class="impor">*</span> </p>
+                                                                    </td>
+                                                                    <td colspan="2" rowspan="1">
+                                                                        <textarea style="height: 150px; resize: none; width: 100%;" ng-model="vm.taskComment.comment"></textarea>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- <tr>
+                                                                <td ><p class="bold">Hạn trả lời: </p></td>
+                                                                <td style="" colspan="2" rowspan="1">
+                                                                    <input style="font-size: 18px" my-date-picker class="form-control" ng-model="vm.letterIn.expiredDate" type="text">
+                                                                </td>
+                                                                <td style="" colspan="3" rowspan="1">
+                                                                </td>
+                                                            </tr> -->
+                                                                <!-- <tr>
+                                                                <td ><p class="bold">Gửi tin nhắn: </p></td>
+                                                                <td>
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox8">
+                                                                    <label class="form-check-label" for="inlineCheckbox8"> Gửi Email</label>
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox9">
+                                                                    <label class="form-check-label" for="inlineCheckbox8"> Gửi SMS</label>
+                                                                </td>
+                                                                <td style="" colspan="4" rowspan="1"></td>
+                                                            </tr> -->
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary btn-lg" ng-click="vm.implementForwardLetterStepTwo()">Thực
+                                                                            hiện</button>
+                                                                        <button class="btn btn-primary btn-lg" ng-click="vm.cancelForwardLetterStepTwo()">Hủy</button>
+                                                                    </td>
+                                                                    <td colspan="4" rowspan="1"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="select_organization_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="fa fa-building"></i> Chọn đơn vị</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row form-group">
+                <div class="col-md-5" style="border: solid 1px #cddbd1;">
+                    <div class="row form-group" style="margin-top: 15px">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" ng-model="search" ng-keyup="applySearch(search)" placeholder="Tìm theo tên">
+                        </div>
+                        <div class="col-md-12" style="height:400px; overflow: auto;">
+                            <div tree-plugins="search" js-tree="treeConfig" ng-model="vm.treeData" tree="treeInstance" tree-events="select_node:selectNode;ready:readyCB"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-left:30px;border: solid 1px #cddbd1;">
+                    <div class="row form-group" style="padding-top: 10px">
+                        <div class="col-md-12">
+                            <label class="bold">Tên đơn vị: </label>
+                            <input readonly data-ng-model="vm.organizationDetail.name" type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="bold">Mã đơn vị: </label>
+                            <input readonly data-ng-model="vm.organizationDetail.code" type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="bold">đơn vị cha</label>
+                            <input readonly data-ng-model="vm.organizationDetail.parent.name" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>
+<style>
+    .impor {
+        color: red;
+        font-weight: bold;
+    }
+</style>

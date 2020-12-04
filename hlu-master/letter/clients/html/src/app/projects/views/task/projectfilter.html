@@ -1,0 +1,12 @@
+<div class="col-md-3 col-md-offset-1">
+	<h4 class="bold">Lọc dự án:</h4>
+	<ui-select ng-model="vm.project"
+		on-select="vm.onProjectSelectedChange()" sortable="true"
+		close-on-select="true" style="width: 100% !important;">
+	<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+	<ui-select-choices
+		repeat="project in vm.projects | propsFilter: {name: $select.search}">
+	<div class="bold"
+		ng-bind-html="project.name | highlight: $select.search"></div>
+	</ui-select-choices> </ui-select>
+</div>

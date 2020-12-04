@@ -1,0 +1,694 @@
+<!-- BEGIN HEADER TOP -->
+<div class="page-header-top page-header-inner">
+    <div class="container" style="height: 100%">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo" style="width:50%;">
+            <div class="pull-left">
+                <img src="assets/images/main_logo.png" alt="logo" class="logo-default visible-lg visible-md visible-sm" />
+            </div>
+            <div class="pull-left" style=" margin-left: 30px;padding: 13px  0;">
+                <p style="margin: 0px;font-family:auto; font-weight:500; font-size:30px; color:#fff;">TRƯỜNG ĐẠI HỌC LUẬT HÀ NỘI
+                </p>
+                <p style="margin: 0px;font-family: auto; font-weight:500; font-size:20px; color:#fff;">HỆ THỐNG QUẢN LÝ HÀNH CHÍNH</p>
+            </div>
+            <div style="clear:both;"></div>
+            <!-- <div class="logo-default visible-xs">
+            	<img src="assets/images/main_logo_small.png" alt="logo" />
+            	<div class="org-sub-title">ĐẠI HỌC LUẬT HÀ NỘI</div>
+            	<div class="org-main-title">HỆ THỐNG QUẢN LÝ HÀNH CHÍNH</div>
+            </div> -->
+        </div>
+        <!-- END LOGO -->   
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler"><i class="fa fa-reorder"></i></a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+                <li class="dropdown dropdown-user dropdown-dark">
+                    <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <img ng-if="!currentUser.hasPhoto" alt="" class="img-circle" ng-src="{{settings.assetsPath}}/images/no-profile-photo-small.png" />
+                        <img id="_user_profile_photo_small" ng-if="currentUser.hasPhoto" alt="" class="img-circle" ng-src="{{settings.api.baseUrl}}public/users/photo/{{currentUser.username}}" />
+                        <span class="username username-hide-on-mobile" data-ng-cloak="">{{currentUser.displayName}}</span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li class="user-photo" ng-if="!currentUser.hasPhoto">
+                            <a href="#" ng-click="profilePhoto.showUploadModal()"><img class="img-circle" alt="User" ng-src="{{settings.assetsPath}}/images/no-profile-photo.png" /><span>cập nhật
+                                    ảnh</span></a>
+                        </li>
+                        <li class="user-photo" ng-if="currentUser.hasPhoto">
+                            <a href="#" ng-click="profilePhoto.showUploadModal()"><img id="_user_profile_photo_big" class="img-circle" alt="User" ng-src="{{settings.api.baseUrl}}public/users/photo/{{currentUser.username}}" /><span>cập
+                                    nhật ảnh</span></a>
+                        </li>
+                        <li style="padding-top: 10px">
+                            <a href="#" ng-click="changePassword()"><i class="icon-shield"></i> Đổi mật khẩu </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li>
+                            <a href="#" data-ng-click="logout()"><i class="icon-power"></i> Đóng phiên làm việc </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END USER LOGIN DROPDOWN -->
+            </ul>
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+</div>
+<!-- END HEADER TOP -->
+<!-- BEGIN HEADER MENU -->
+<div class="page-header-menu">
+    <div class="container">
+        <div class="hor-menu">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#/dashboard"><i class="fa fa-home"></i></a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown ">
+                    <a href="#/letter_management">
+                        <!-- #/document_listing -->
+                        <responsive-menu-item long-text="Quản lý công văn" short-text="Công văn"></responsive-menu-item>
+                    </a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown ">
+                    <a href="#/news"> Tin tức & Sự kiện</a>
+                </li>
+                <!-- <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="javascript:;"><responsive-menu-item long-text="Quản lý công việc" short-text="Công việc"></responsive-menu-item><i class="fa fa-angle-down"></i></a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/workplans">
+                                                    <i class="fa fa-caret-right"></i> Kế hoạch công việc
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/tasks">
+                                                    <i class="fa fa-caret-right"></i> Quản lý công việc
+                                                </a>
+                                            </li>
+                                          <li>
+                                                <a href="#/taskowners">
+                                                    <i class="fa fa-caret-right"></i> Vị trí công việc
+                                                </a>
+                                            </li>    
+                                          	<li>
+                                                <a href="#/taskroles">
+                                                    <i class="fa fa-caret-right"></i> Quản lý vai trò công việc
+                                                </a>
+                                            </li>
+                                          	<li>
+                                                <a href="#/task_flow">
+                                                    <i class="fa fa-caret-right"></i> Danh mục Quy trình
+                                                </a>
+                                            </li>   
+											<li>
+                                                <a href="#/taskpriority">
+                                                    <i class="fa fa-caret-right"></i> Danh mục Độ ưu tiên
+                                                </a>
+                                            </li>   
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>  -->
+                <!-- <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="javascript:;"><responsive-menu-item long-text="Quản lý dự án" short-text="Dự án"></responsive-menu-item>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/projects">
+                                                    <i class="fa fa-caret-right"></i> Danh sách dự án
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/projecttasks">
+                                                    <i class="fa fa-caret-right"></i> Quản lý dự án
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/taskroles">
+                                                    <i class="fa fa-caret-right"></i> Vai trò - Công việc
+                                                </a>
+                                            </li>                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>                                 -->
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="javascript:;">
+                        <responsive-menu-item long-text="Quản lý lịch tuần" short-text="Lịch tuần">
+                        </responsive-menu-item>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/calendar">
+                                                    <i class="fa fa-caret-right"></i>Lịch tuần
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/event-priority">
+                                                    <i class="fa fa-caret-right"></i>Danh mục độ ưu tiên
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="!isAdmin">
+                    <a href="#/calendar">
+                        Lịch tuần
+                    </a>
+                </li>
+                <!--<li class="menu-dropdown mega-menu-dropdown ">-->
+                <!--<a href="#/contracts"><i class="icon-magic-wand"></i> Quản lý hợp đồng</a>-->
+                <!--</li>-->
+
+                <!-- <li class="menu-dropdown mega-menu-dropdown" ng-if="!isAdmin">
+                    <a href="#/document_custom">
+                        Tài liệu
+                    </a>
+                </li>  
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="javascript:;"><responsive-menu-item long-text="Quản lý tài liệu" short-text="Tài liệu"></responsive-menu-item>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/document_custom">
+                                                    <i class="fa fa-caret-right"></i> Tài liệu
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_category">
+                                                    <i class="fa fa-caret-right"></i> Danh sách thể loại
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/policies-regulations">
+                                                    <i class="fa fa-caret-right"></i> Quy chế - quy định
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/collaboration-processes">
+                                                    <i class="fa fa-caret-right"></i> Quy trình phối hợp
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/template">
+                                                    <i class="fa fa-caret-right"></i> Danh sách biểu mẫu
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li> -->
+                <!--<li class="menu-dropdown mega-menu-dropdown">-->
+                <!--<a href="javascript:;"> Tiền lương-->
+                <!--<i class="fa fa-angle-down"></i>-->
+                <!--</a>-->
+                <!--<ul class="dropdown-menu" style="min-width: 250px;">-->
+                <!--<li>-->
+                <!--<div class="mega-menu-content">-->
+                <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                <!--<ul class="mega-menu-submenu">-->
+                <!--<li>-->
+                <!--<a href="#/setup_salary">-->
+                <!--<i class="fa fa-caret-right"></i> Cấu hình tính lương-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="#/salaryitem">-->
+                <!--<i class="fa fa-caret-right"></i> Danh mục phần tử lương-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="#/salaryconfig">-->
+                <!--<i class="fa fa-caret-right"></i> Danh mục cấu hình lương-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="#/salaryincrementtype">-->
+                <!--<i class="fa fa-caret-right"></i> Danh mục loại tăng lương-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="javascript:;"> Quản lý tin tức
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/cms_article">
+                                                    <i class="fa fa-caret-right"></i>Danh mục tin tức
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/cms_category">
+                                                    <i class="fa fa-caret-right"></i>Danh mục chủ đề tin tức
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="#/staff">
+                        Nhân sự
+                    </a>
+                    <!-- <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/staff">
+                                                    <i class="fa fa-caret-right"></i> Danh sách nhân sự
+                                                </a>
+                                            </li>                                        
+                                            <li>
+                                                <a href="#/timesheet">
+                                                    <i class="fa fa-caret-right"></i> Chấm công
+                                                </a>
+                                            </li>
+                                         	<li>
+                                                <a href="#/timesheetdetail">
+                                                    <i class="fa fa-caret-right"></i> Nhật ký công việc
+                                                </a>
+                                            </li>                                            
+                                         	<li>
+                                                <a href="#/shiftwork">
+                                                    <i class="fa fa-caret-right"></i> Ca làm việc
+                                                </a>
+                                            </li>  
+                                            <li>
+                                                <a href="#/workingstatus">
+                                                    <i class="fa fa-caret-right"></i> Trạng thái công việc
+                                                </a>
+                                            </li> 
+                                            <li>   
+                                                <a href="#/salaryconfig">
+                                                    <i class="fa fa-caret-right"></i> Cấu hình lương
+                                                </a>
+                                            </li>                                              
+                                            <li>   
+                                                <a href="#/salaryitem">
+                                                    <i class="fa fa-caret-right"></i> Phần tử lương
+                                                </a>
+                                            </li>     
+                                            <li>   
+                                                <a href="#/salaryincrementtype">
+                                                    <i class="fa fa-caret-right"></i> Loại tăng lương
+                                                </a>
+                                            </li>       
+                                            <li>   
+                                                <a href="#/synthesis_report_of_staff">
+                                                    <i class="fa fa-caret-right"></i> Báo cáo tổng hợp
+                                                </a>
+                                            </li>                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>                     -->
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="javascript:;">Danh mục
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/document_field">
+                                                    <i class="fa fa-caret-right"></i>Danh mục lĩnh vực văn bản
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_priority">
+                                                    <i class="fa fa-caret-right"></i>Danh mục độ khẩn văn bản
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_security_level">
+                                                    <i class="fa fa-caret-right"></i>Danh mục độ mật văn bản
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_type">
+                                                    <i class="fa fa-caret-right"></i>Danh mục loại văn bản
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_book">
+                                                    <i class="fa fa-caret-right"></i>Danh mục sổ văn bản
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/document_book_group">
+                                                    <i class="fa fa-caret-right"></i>Danh mục nhóm sổ văn bản
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/task_flow">
+                                                    <i class="fa fa-caret-right"></i>Danh mục quy trình xử lý văn bản
+                                                </a>
+                                            </li> -->
+                                            <li>
+                                                <a href="#/positiontitle">
+                                                    <i class="fa fa-caret-right"></i>Danh mục chức vụ
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/civilservantgrade/civilservantgrade-system">
+                                                    <i class="fa fa-caret-right"></i>Cấp bậc công chức
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/civilservantcategory/civilservantcategory-system">
+                                                    <i class="fa fa-caret-right"></i>Danh mục loại công chức
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/department">
+                                                    <i class="fa fa-caret-right"></i> Danh mục phòng ban
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/salaryitem">
+                                                    <i class="fa fa-caret-right"></i> Danh mục phần tử lương
+                                                </a>
+
+                                            </li> -->
+                                            <li>
+                                                <a href="#/religion">
+                                                    <i class="fa fa-caret-right"></i> Danh mục tôn giáo
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/ethnics">
+                                                    <i class="fa fa-caret-right"></i> Danh mục dân tộc
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/socialclass">
+                                                    <i class="fa fa-caret-right"></i> Danh mục thành phần gia đình
+                                                </a>
+                                            </li> -->
+                                            <!-- <li>
+                                                <a href="#/socialpriority">
+                                                    <i class="fa fa-caret-right"></i> Danh mục gia đình thuộc diện ưu tiên
+                                                </a>
+                                            </li> -->
+                                            <li>
+                                                <a href="#/room/listing">
+                                                    <i class="fa fa-caret-right"></i> Danh mục phòng
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/building/listing">
+                                                    <i class="fa fa-caret-right"></i> Danh mục tòa nhà - dãy nhà
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/address">
+                                                    <i class="fa fa-caret-right"></i> Danh mục địa chỉ
+                                                </a>
+                                            </li> -->
+                                            <li>
+                                                <a href="#/labouragreement">
+                                                    <i class="fa fa-caret-right"></i> Danh mục loại hợp đồng
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/organization">
+                                                    <i class="fa fa-caret-right"></i> Danh mục cơ quan - đơn vị
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/educationdegree">
+                                                    <i class="fa fa-caret-right"></i> Danh mục bằng cấp
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/academictitle">
+                                                    <i class="fa fa-caret-right"></i> Danh mục học hàm học vị
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/shiftwork">
+                                                    <i class="fa fa-caret-right"></i> Danh mục ca làm việc
+                                                </a>
+                                            </li> -->
+                                            <!-- <li>
+                                                <a href="#/overtimetype">
+                                                    <i class="fa fa-caret-right"></i> Danh mục làm ngoài giờ
+                                                </a>
+                                            </li> -->
+                                            <!-- <li>
+                                                <a href="#/salaryincrementtype">
+                                                    <i class="fa fa-caret-right"></i> Danh mục loại tăng lương
+                                                </a>
+                                            </li>  -->
+                                            <!-- <li>
+                                                <a href="#/specialityadmissionsmap">
+                                                    <i class="fa fa-caret-right"></i> Danh mục cấu hình mã ngành tuyển sinh
+                                                </a>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown" ng-if="isAdmin">
+                    <a href="javascript:;"><i class="icon-equalizer"></i>
+                        <responsive-menu-item long-text="Hệ thống" short-text=""></responsive-menu-item>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 250px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <a href="#/taskowners">
+                                                    <i class="fa fa-angle-right"></i> Vị trí công việc
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/taskroles">
+                                                    <i class="fa fa-angle-right"></i> Quản lý vai trò công việc
+                                                </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a href="#/user/groups">
+                                                    <i class="icon-people"></i> Nhóm người dùng
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/user/accounts">
+                                                    <i class="icon-user"></i> Người dùng
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/user/roles">
+                                                    <i class="icon-badge"></i> Vai trò
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/user/permissions">
+                                                    <i class="icon-shield"></i> Phân quyền
+                                                </a>
+                                            </li> -->
+                                            <!--<li class="divider"></li>-->
+                                            <!-- <li>
+                                                <a href="#/settings">
+                                                    <i class="fa fa-gear"></i> Thiết lập hệ thống
+                                                </a>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- END MEGA MENU -->
+    </div>
+</div>
+<!-- END HEADER MENU -->
+<script type="text/ng-template" id="upload_photo_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="icon-cloud-upload"></i> Cập nhật ảnh đại diện</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="no-content1 display-block link" ngf-select="profilePhoto.triggerUpload($file, $invalidFiles)" accept="image/*" ngf-pattern="image/*, .jpg, .png" ngf-accept="'image/*'" ngf-multiple="false" ngf-max-size="1MB" ngf-min-height="300" ngf-max-height="1000"
+                        ngf-min-width="300" ngf-max-width="1000"><i class="fa fa-cloud-upload"></i> Chọn ảnh để tải lên</a>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.uploadedFile != null">
+                    <div class="row">
+                        <div class="col-xs-5 align-right">
+                            <label>Tệp tin đã chọn:</label>
+                        </div>
+                        <div class="col-xs-7">
+                            <span class="bold">{{profilePhoto.uploadedFile.name}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.errorFile != null && profilePhoto.errorFile.$error != ''">
+                    Error: <span class="bold" ng-if="profilePhoto.errorFile.$error == 'maxSize'">Kích thước tệp tin không được vượt quá {{profilePhoto.errorFile.$errorParam}}</span>
+                    <span class="bold" ng-if="profilePhoto.errorFile.$error == 'maxWidth' || profilePhoto.errorFile.$error == 'maxHeight' || profilePhoto.errorFile.$error == 'minWidth' || profilePhoto.errorFile.$error == 'minHeight'">Kích thước ngang và dọc của ảnh phải từ 300 đến 1000 điểm ảnh.</span>
+                    <span class="bold" ng-if="profilePhoto.errorFile.$error != null && profilePhoto.errorFile.$error != 'maxSize' && profilePhoto.errorFile.$error != 'maxWidth' && profilePhoto.errorFile.$error != 'maxHeight' && profilePhoto.errorFile.$error != 'minWidth' && profilePhoto.errorFile.$error != 'minHeight'">Tệp tin {{profilePhoto.errorFile.name}} không hợp lệ.</span>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.uploadedFile.progress >= 0">
+                    <div class="progress" style="height: 20px">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="profilePhoto.uploadedFile.progress + '%'" style="width:{{profilePhoto.uploadedFile.progress}}%;">
+                            {{profilePhoto.uploadedFile.progress}}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="profilePhoto.closeUploadFile()" data-ng-disabled="profilePhoto.uploadedFile.progress > 0 && profilePhoto.uploadedFile.progress < 100" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+            <button type="button" ng-click="profilePhoto.startUploadFile(profilePhoto.uploadedFile)" class="btn btn-primary" data-ng-disabled="profilePhoto.uploadedFile == null || (profilePhoto.errorFile != null && profilePhoto.errorFile.$error != '') || profilePhoto.uploadedFile.progress >= 100"
+                data-dismiss="modal">Bắt đầu tải lên</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="crop_photo_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="fa fa-crop"></i> Chỉnh sửa ảnh</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="cropper-crop-area">
+                        <ui-cropper image="profilePhoto.photoUrl" area-type="square" area-init-size="{ w:cropper.cropWidth,h:cropper.cropHeight}" cropject="profilePhoto.cropper" result-image="profilePhoto.croppedImage"></ui-cropper>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Chấp nhận</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="change_password_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-shield"></i> Đổi mật khẩu</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span style="font-size: 170px; color: #dddddd"><i class="im im-icon-Lock-3"></i></span>
+                </div>
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.current_password" class="bold">Mật khẩu hiện thời</label>
+                            <input type="password" class="form-control" id="_frm_change_password.current_password" ng-model="changePasswordObj.currentPassword" autofocus="autofocus" />
+                        </div>
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.new_password" class="bold">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="_frm_change_password.new_password" ng-model="changePasswordObj.newPassword" />
+                        </div>
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.new_password_rep" class="bold">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="_frm_change_password.new_password_rep" ng-model="changePasswordObj.newPasswordRep" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" ng-click="changePasswordObj.saveNewPassword()" class="btn blue-dark" data-dismiss="modal">Cập nhật</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="password_changed_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="icon-shield"></i> Mật khẩu đã thay đổi</h4>
+        </div>
+        <div class="modal-body">
+            Bạn đã thay đổi mật khẩu thành công. Bạn vui lòng đóng phiên làm việc hiện tại và đăng nhập lại bằng mật khẩu mới để tiếp tục.
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$close(); logout();" class="btn blue-dark" data-dismiss="modal">Đóng phiên làm việc</button>
+        </div>
+    </div>
+</script>

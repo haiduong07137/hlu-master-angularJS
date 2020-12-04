@@ -1,0 +1,191 @@
+<div class="col-md-12" style="border: solid 1px #cddbd1;padding: 0px;">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <h4 ng-if="vm.isView" class="bold text-center" style="font-size: 20px"><i class="fa fa-book" aria-hidden="true"></i> Chi tiết văn bản đến</h4>
+
+                                </div>
+                            </div>
+                            <div class="panel-body" style="background-color: #FCFCFF">
+                                <div style="margin-top: 10px" class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table add-new-table">
+                                            <tbody>
+											<tr>
+                                                <td ></td>
+                                                <td  colspan="6" rowspan="1" style="text-align:right">
+                                                   <span >Tạo lúc: {{vm.letterIn.create|date:'HH:mm:ss dd/MM/yyyy'}} , bởi {{vm.letterIn.createdBy}}</span>
+												   <br/>
+												   <span  ng-if="vm.letterIn.modify!=null">Cập nhật lần cuối lúc: {{vm.letterIn.modify|date:'HH:mm:ss dd/MM/yyyy'}} , bởi {{vm.letterIn.modifiedBy}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Bút phê: </p></td>
+                                                <td style="" colspan="6" rowspan="1" >
+                                                    <textarea readonly style="font-size: 18px" class="form-control textarea-size" ></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Trích yếu: </p></td>
+                                                <td style="" colspan="6" rowspan="1" >
+                                                    <textarea readonly style="font-size: 18px" class="form-control textarea-size" ng-model="vm.letterIn.briefNote"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Cơ quan ban hành: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input style="padding-left:5px;font-size: 18px;" readonly data-ng-model="vm.letterIn.issueOrgan.name" placeholder="" type="text" class="form-control"/>
+                                                </td>
+                                                <td ><p class="bold"> Ngày ban hành: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+
+                                                    <input readonly style="font-size: 18px" my-date-picker class="form-control" ng-model="vm.letterIn.issuedDate" type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Ngày hiệu lực: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input readonly style="font-size: 18px" my-date-picker class="form-control" ng-model="vm.letterIn.officialDate" type="text">
+                                                </td>
+                                                <td ><p class="bold"> Người ký: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.signedPerson" type="text">
+                                                </td>
+                                                <td ><p class="bold">Chức vụ: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.signedPerson" type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Số kí hiệu: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input style="padding-left:5px;font-size: 18px;" readonly data-ng-model="vm.letterIn.docOriginCode" placeholder="" type="text" class="form-control"/>
+                                                </td>
+                                                <td ><p class="bold"> Số nội bộ: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px"  class="form-control" ng-model="vm.letterIn.docCode" type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Loại văn bản: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input style="padding-left:5px;font-size: 18px;" readonly data-ng-model="vm.letterIn.letterDocumentType.name" placeholder="" type="text" class="form-control"/>
+                                                </td>
+                                                <td ><p class="bold"> Số tờ: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px"  class="form-control" ng-model="vm.letterIn.numberOfPages" type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Trạng thái: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input style="padding-left:5px;font-size: 18px;" readonly  placeholder="" type="text" class="form-control"/>
+                                                </td>
+                                                <td ><p class="bold">Phân loại văn bản: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px"  class="form-control"  type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><p class="bold">File đính kèm: </p>
+                                                </td>
+                                                <td style="" colspan="6" rowspan="1">
+                                                    <div class="row">
+                                                        <div class="row" ng-if="vm.letterIn.attachments.length > 0">
+                                                            <div class="col-md-12 margin-top-20">
+                                                                <table id="bsTableControl4Files" bs-table-control="vm.bsTableControl4Files"></table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td ><p class="bold">Thông tin khác: </p></td>
+                                                <td colspan="2" rowspan="1" style="padding-top:10px;padding-left:10px;">
+                                                    <a ng-click="vm.showDetail()">Ẩn/hiện</a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="vm.isShowDetail">
+                                                <td ><p class="bold">Vào sổ văn bản: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.letterDocBook.name" >
+
+                                                </td>
+                                                <td ><p class="bold"> Số đến theo sổ: </p></td>
+                                                <td style="" colspan="2" rowspan="1">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.documentOrderNoByBook" type="number">
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="vm.isShowDetail">
+                                                <td ><p class="bold">Ngày đến: </p></td>
+                                                <td style="" colspan="2" rowspan="1">
+                                                    <input readonly style="font-size: 18px" my-date-picker class="form-control" ng-model="vm.letterIn.deliveredDate" type="text">
+                                                </td>
+                                                <td ><p class="bold">Ngày vào sổ: </p></td>
+                                                <td style="" colspan="2" rowspan="1">
+                                                    <input readonly style="font-size: 18px" my-date-picker class="form-control" ng-model="vm.letterIn.registeredDate" type="text">
+                                                </td>
+                                            </tr>
+											<tr ng-if="vm.isShowDetail">
+                                                <td ><p class="bold">Độ khẩn: </p></td>
+                                                <td style="" colspan="2" rowspan="1" style="">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.letterDocPriority.name" type="text">
+                                                </td>
+                                                <td ><p class="bold">Độ mật: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.letterDocSecurityLevel.name" type="text">
+                                                </td>
+                                                <td ><p class="bold">Lĩnh vực: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <input readonly style="font-size: 18px" class="form-control" ng-model="vm.letterIn.letterDocField.name" type="text">
+                                                </td>
+                                            </tr>
+											<tr ng-if="vm.isShowDetail">
+                                                 <td ><p class="bold">Hạn trả lời: </p></td>
+                                                <td style="" colspan="2" rowspan="1">
+                                                    <input readonly class="form-control" style="font-size: 18px" ng-model="vm.letterIn.expiredDate" type="text" my-date-picker>
+                                                </td>
+                                                <td ><p class="bold">Đường công văn: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                    <ui-select ng-model="vm.letterIn.letterLine" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                                        <ui-select-match allow-clear="false" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="so.id as so in vm.letterLines  | propsFilter: {name: $select.search}">
+                                                            <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </td>
+                                                <td ><p class="bold">Loại bản lưu: </p></td>
+                                                <td style="" colspan="1" rowspan="1">
+                                                     <ui-select ng-model="vm.letterIn.saveLetterType" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                                        <ui-select-match allow-clear="false" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="so.id as so in vm.saveLetterTypes  | propsFilter: {name: $select.search}">
+                                                            <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </td>
+                                            </tr>
+                                 
+                                            <tr ng-if="vm.isShowDetail">
+                                                <td ><p class="bold">Ghi chú: </p></td>
+                                                <td style="" colspan="6" rowspan="1" >
+                                                    <textarea readonly style="font-size: 18px" class="form-control textarea-size" ng-model="vm.letterIn.description"></textarea>
+                                                </td>
+                                            </tr>
+                                          <tr>
+                                                <td ><p class="bold">Nhật ký xử lý: </p></td>
+                                                <td colspan="2" rowspan="1" style="padding-top:10px;padding-left:10px;">
+                                                    <a >Ẩn/hiện</a>
+                                                </td>
+                                            </tr>
+                                          
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <button class="btn btn-primary btn-lg" data-ng-click="$parent.editDocument(vm.letterIn.id)" >Sửa</button>
+                                        <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.deleteDocument(vm.letterIn.id)">Xóa</button>
+
+                                        <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.cancelViewDocument()">Quay về</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>

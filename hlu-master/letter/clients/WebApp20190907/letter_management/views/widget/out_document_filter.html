@@ -1,0 +1,42 @@
+<div class="col-md-5" style="margin-top: 40px;">
+    <div class="input-group br" style="padding: 0px 20px;">
+        <input class="form-control search ng-pristine ng-untouched ng-valid ng-empty" type="text" ng-keypress="vm.enterSearchCode()" data-ng-model="vm.searchObject.text" placeholder="Tìm kiếm theo số hiệu văn bản hoặc trích yếu"> 
+        <div class="input-group-btn">
+            <div class="btn-group dropup">
+                <button class="btn btn-primary" type="submit"
+                    ng-click="vm.searchByText()">
+                    <span class="glyphicon glyphicon-search"></span> Tìm
+        		</button>
+    		</div>
+    	</div>
+	</div>
+</div>
+<div class="col-md-1"></div>
+<div class="row col-md-6 padding-right-20">
+    <div class="col-md-6">
+        <label class="bold">Loại văn bản</label>
+        <ui-select ng-model="vm.searchObject.documentTypeId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;" search-enabled="true">
+            <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="so.id as so in vm.documentTypeIds  | propsFilter: {name: $select.search}">
+                <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div class="col-md-6 no-padding">
+        <label class="bold">Lĩnh vực văn bản</label>
+        <ui-select ng-model="vm.searchObject.letterDocFieldId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;">
+            <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="so.id as so in vm.letterDocFieldIds  | propsFilter: {name: $select.search}">
+                <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+
+<style>
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+	color:rgb(8, 8, 8); 
+}
+</style>

@@ -1,0 +1,103 @@
+package com.globits.letter.utils;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.NumberToTextConverter;
+import org.apache.poi.ss.util.PropertyTemplate;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.globits.calendar.dto.EventDto;
+import com.globits.core.dto.PersonAddressDto;
+import com.globits.security.dto.RoleDto;
+import com.globits.security.dto.UserDto;
+
+public class ImportExportExcelUtil {
+	private static Hashtable<String, Integer> hashSubjectColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashSubjectColumnPropertyConfig = new Hashtable<String, String>();
+
+	private static Hashtable<String, Integer> hashQuestionColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashQuestionColumnPropertyConfig = new Hashtable<String, String>();
+
+	private static Hashtable<String, Integer> hashStudentColumnConfig = new Hashtable<String, Integer>();
+	private static Hashtable<String, String> hashColumnPropertyConfig = new Hashtable<String, String>();
+	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private static DecimalFormat numberFormatter = new DecimalFormat("######################");
+
+	public static void exportEventPublic(List<EventDto> listEventDto, ServletOutputStream out, InputStream ip) throws IOException {
+		Workbook workbook = new XSSFWorkbook(ip);
+		CreationHelper createHelper = workbook.getCreationHelper();
+
+		PropertyTemplate pt = new PropertyTemplate();
+		Font font = workbook.createFont();
+		font.setColor(IndexedColors.BLACK.getIndex());
+
+		CellStyle cellStyle = workbook.createCellStyle();
+		cellStyle.setFont(font);
+		cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		cellStyle.setBorderTop(BorderStyle.THIN);
+		cellStyle.setBorderBottom(BorderStyle.THIN);
+		cellStyle.setBorderLeft(BorderStyle.THIN);
+		cellStyle.setBorderRight(BorderStyle.THIN);
+
+		CellStyle cellStyleCenter = workbook.createCellStyle();
+		cellStyleCenter.setFont(font);
+		cellStyleCenter.setVerticalAlignment(VerticalAlignment.CENTER);
+		cellStyleCenter.setAlignment(HorizontalAlignment.CENTER);
+		cellStyleCenter.setBorderTop(BorderStyle.THIN);
+		cellStyleCenter.setBorderBottom(BorderStyle.THIN);
+		cellStyleCenter.setBorderLeft(BorderStyle.THIN);
+		cellStyleCenter.setBorderRight(BorderStyle.THIN);
+
+		int rowIndex = 6;
+		int index = 0;
+		Date dateNow = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/YYYY");
+		
+		if (listEventDto != null && listEventDto.size() > 0) {
+
+			Sheet sheet = null;
+			sheet = workbook.getSheetAt(0);
+
+			//truyền dữ liệu vào  chủ trì
+			Row row = sheet.getRow(1);
+			Cell cell = row.getCell(4);
+			if (listEventDto.get(0).getChairPerson().getDisplayName() != null) {
+				cell.setCellValue("Chủ trì: " + listEventDto.get(0).getChairPerson().getDisplayName());
+			}
+			
+		}
+		
+		workbook.write(out);
+		workbook.close();
+	}
+}

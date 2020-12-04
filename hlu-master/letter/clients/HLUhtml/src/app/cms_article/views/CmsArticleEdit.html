@@ -1,0 +1,102 @@
+<div class="row col-md-12 margin-top-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 margin-top-20">
+                        <label class="bold">Tiêu đề</label>
+                        <input class="form-control" ng-model="vm.article.title" />
+                    </div>
+                    <div class="col-xs-12 col-md-12 margin-top-20">
+                        <label class="bold">Tóm tắt nội dung</label>
+                        <input class="form-control" ng-model="vm.article.summary" />
+                    </div>
+                    <div class="col-xs-12 col-md-12 no-padding">
+                        <div class="col-xs-6 col-md-6 margin-top-20">
+                            <label class="bold">Chủ đề</label>
+                            <ui-select multiple theme="bootstrap" on-remove="onRemove($item)"
+                                on-select="onSelected($item)" data-ng-model="vm.article.listCategory" sortable="true"
+                                close-on-select="true" style="width: 100% !important;">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$item.title}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="category in vm.cmsCategories | propsFilter: {title: $select.search}">
+                                    <div class="bold" ng-bind-html="category.title | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <!-- <div class="col-xs-6 col-md-6 margin-top-20">
+                            <label class="bold">Loại bài báo</label>
+                            <ui-select ng-model="vm.article.articleType" sortable="true" close-on-select="true"
+                                style="width: 100% !important;">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="so in vm.cmsArticleTypes  | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>  -->
+                        <div class="col-xs-6 col-md-6 margin-top-20">
+	                        <label class="bold">Ngày đăng tin</label>
+	                        <div class="input-group col-xs-12" style="padding-bottom: 10px;">
+	                            <p class="input-group" style="margin-bottom:10px; margin-top:0px">
+                       				<input style="font-size: 18px" ng-disabled="true" my-date-picker
+										ng-disabled="vm.isDisabled()" class="form-control"
+										ng-model="vm.article.publishDate" type="text">
+	                            </p>
+	                        </div>
+	                    </div>
+                    </div>
+                    
+                    <div class="col-xs-12 col-md-12 margin-top-20">
+                        <label class="bold">Ảnh tiêu đề</label>
+                        <button style="padding: 0 10px!important; line-height: 20px !important;" type="button" ng-if="vm.article.titleImageUrl != null" ng-click="vm.removeImg()" class="btn btn-danger">Xóa</button>
+                        <div class="left-profile image-profile text-center" ng-model="vm.file"
+                            ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="100MB">
+                            <p ng-if="!vm.article.titleImageUrl ||vm.article.titleImageUrl.length <= 0"><button
+                                    class="btn btn-success">Chọn ảnh tiêu đề</button></p>
+                            <div class="col-md-12 text-center">
+                                <div ng-if="vm.article.titleImageUrl" class="img-title">
+                                    <img ng-src="{{settings.api.baseUrl}}public/download/eventfile/{{vm.article.titleImageUrl}}"
+                                        ngf-accept="'image/*'" style="width: 100%; height:100%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 margin-top-20">
+                        <label class="bold">Nội dung</label>
+                        <!-- <input class="form-control" ng-model="vm.article.content"/> -->
+                        <textarea ui-tinymce="vm.tinymceOptions" class="form-control"
+                            ng-model="vm.article.content"></textarea>
+                    </div>
+
+                    <div class="col-md-12 text-right margin-top-20">
+                        <button type="button" ng-click="vm.goBack()" class="btn btn-default" data-dismiss="modal">Hủy
+                            bỏ</button>
+                        <button type="button" ng-click="vm.save()" class="btn btn-primary"
+                            data-dismiss="modal">Lưu</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #mce_fullscreen_container {
+        z-index: 999999 !important;
+    }
+
+    .img-title {
+        width: 300px;
+    }
+    .no-padding{
+        padding: 0px;
+    }
+</style>

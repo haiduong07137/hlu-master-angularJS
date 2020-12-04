@@ -1,0 +1,187 @@
+<div class="row bordered-container">
+    <div submenu-toggler><i class="fa fa-long-arrow-right"></i></div>
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <!-- <div class="portlet-title">
+				<div class="btn-group pull-left margin-top-10 margin-bottom-10">
+					<button class="btn btn-default" data-ng-click="vm.newDepartment()"><i class="fa fa-plus-circle"></i>Thêm mới</button>
+                  <button class="btn btn-default margin-left-10" data-ng-click="vm.importDepartment()"><i class="fa fa-cloud-upload"></i> Import</button>
+                     <button class="btn btn-default margin-left-10" data-ng-click="vm.updateLinePath()"><i class="fa fa-refresh"></i> Cập nhật đường dẫn</button>
+                     <a href="#" class="btn btn-default margin-left-10" file-name="'PhongBan.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Export</i></a>
+				</div>
+			</div> -->
+            <div class="portlet-body">
+                <div id="letter_container" class="row">
+                    <div class="col-md-3">
+                        <div ng-include="'letter_management/views/widget/side_bar.html'"></div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 ng-if="vm.isNew && vm.isView == false" class="box-title">Vào sổ văn bản đến</h3>
+                                <h3 ng-if="!vm.isNew && vm.isView == false" class="box-title">Sửa văn bản đến</h3>
+                                <h3 ng-if="vm.isView" class="box-title">Xem Văn Bản Đến</h3>
+                            </div>
+                            <div class="box-body" style="background-color: #FCFCFF">
+                                <div style="margin-top: 10px" class="row form-group">
+                                    <div class="col-md-12">
+                                        <div ng-include="'letter_management/views/widget/letter_info.html'"></div>
+                                        <div ng-include="'letter_management/views/widget/letter_hidden.html'"></div>
+                                    </div>
+                                    <div class="row" ng-if="!vm.isView">
+                                        <div class="col-md-12 margin-top-20 text-right" ng-if="!vm.isDisabled()">
+                                            <button class="btn btn-primary btn-lg" data-ng-click="vm.newLetterIn()">Lưu lại</button>
+                                            <!-- <button class="btn btn-primary btn-lg margin-left 10"
+												data-ng-click="vm.newLetterIn()">Lưu lại và quay về</button>
+											<button class="btn btn-primary btn-lg margin-left 10"
+												data-ng-click="vm.newLetterInAndView()">Lưu lại và xem</button> -->
+                                            <!-- <button class="btn btn-primary btn-lg margin-left 10"
+												data-ng-click="vm.viewLetterIn()">Xem</button> -->
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.reworkLetterIn()">Làm lại</button>
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.cancelLetterIn()">Hủy</button>
+                                        </div>
+                                        <div class="col-md-12 text-center margin-top-10" ng-if="vm.isDisabled()">
+                                            <button class="btn btn-primary btn-lg" data-ng-click="vm.newLetterIn()">Chuyển Phân Luồng</button>
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.cancelLetterIn()">Hủy</button>
+                                        </div>
+                                    </div>
+                                    <div ng-if="vm.isView">
+                                        <div class="col-md-12 margin-top-10 text-center">
+                                            <button class="btn btn-primary btn-lg" data-ng-click="vm.completeLetter(vm.letterId)" ng-if="vm.checkShowBtnComplete()">Hoàn thành xử lý</button>
+                                            <!-- <button class="btn btn-primary btn-lg" data-ng-click="vm.editDocumentFromView(vm.letterId)" ng-if="">Sửa</button> -->
+                                            <!-- <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="" ng-if="vm.checkShowBtnReportComplete()"> Báo cáo hoàn thành</button>
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="" ng-if="vm.checkShowBtnAddAssistant()"> Thêm nhân viên xử lý</button> -->
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.forwardLetterStepTwo(vm.letterId)" ng-if="vm.checkShowBtnForword()"> Phân Luồng</button>
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.assignLetter(vm.letterId)" ng-if="vm.checkShowBtnAssign()"> Giao xử lý</button>
+                                            <button class="btn btn-primary btn-lg margin-left 10" data-ng-click="vm.goBack()"><i class="fa fa-mail-reply-all"></i> Trở lại</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="vm.letterId">
+                                    <div class="box box-info">
+                                        <div class="box-header with-border">
+                                            <h6 class="box-title">Ý kiến xử lý</h6>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="table-responsive">
+                                                <table class="table no-margin table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width:25%;">Phòng ban</th>
+                                                            <th>Ý kiến</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="participate in vm.sortObject(vm.letterIn.task.participates)">
+                                                            <td style="width:25%;font-weight: bold;">
+                                                                <p style="margin:0px;">{{participate.taskOwner.displayName}}</p>
+                                                                <div ng-if="participate.role != null && participate.role.name != ''">({{participate.role.name}})</div>
+                                                                <div ng-if="participate.hasOwnerPermission"><button ng-click="vm.addComment(participate);" class="btn btn-primary">Ý kiến</button></div>
+                                                            </td>
+                                                            <td>
+                                                                <div ng-if="participate.comments.length == 0"><span class="text-secondary">Chưa có ý kiến</span></div>
+                                                                <p ng-repeat="comment in participate.comments | orderBy:'id' : true" style="margin:0px;">
+                                                                    <span class="comment" ng-bind-html="comment.comment"></span>
+                                                                    <span class="text-danger">({{comment.modifyDate[3]}}:{{comment.modifyDate[4]}} ngày {{comment.modifyDate[2]}}/{{comment.modifyDate[1]}}/{{comment.modifyDate[0]}} bởi {{comment.createdBy}})</span>
+                                                                    <span style="padding-left: 10px;cursor: pointer;" ng-if="vm.isShowEdit(comment.createdBy)" ng-click=" vm.editComment(comment,participate)"><i class="fa fa-edit" style="color:rgb(71, 180, 44);"></i>Sửa</span></p>
+                                                                <!-- <span class="comment" ng-bind-html="comment.comment"></span><span class="text-danger">(tạo bởi {{comment.createdBy}})</span> <span style="padding-left: 10px;cursor: pointer;" ng-if="vm.isShowEdit(comment.createdBy)"
+                                                                    ng-click=" vm.editComment(comment,participate)"><i class="fa fa-edit" style="color:rgb(71, 180, 44);"></i>Sửa</span></p> -->
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="select_organization_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="fa fa-building"></i> Chọn đơn vị</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row form-group">
+                <div class="col-md-5" style="border: solid 1px #cddbd1;">
+                    <div class="row form-group" style="margin-top: 15px">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" ng-model="search" ng-keyup="applySearch(search)" placeholder="Tìm theo tên">
+                        </div>
+                        <div class="col-md-12" style="height:400px; overflow: auto;">
+                            <div tree-plugins="search" js-tree="treeConfig" ng-model="vm.treeData" tree="treeInstance" tree-events="select_node:selectNode;ready:readyCB"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-left:30px;border: solid 1px #cddbd1;">
+                    <div class="row form-group" style="padding-top: 10px">
+                        <div class="col-md-12">
+                            <label class="bold">Tên đơn vị: </label>
+                            <input readonly data-ng-model="vm.organizationDetail.name" type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="bold">Mã đơn vị: </label>
+                            <input readonly data-ng-model="vm.organizationDetail.code" type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="bold">đơn vị cha</label>
+                            <input readonly data-ng-model="vm.organizationDetail.parent.name" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="add_comment.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title">Ý kiến xử lý</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <label>Ý kiến của: <strong><small>{{vm.taskComment.participate.taskOwner.displayName}}</small></strong></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <textarea type="text" ng-model="vm.taskComment.comment" class="form-control" placeholder="Nhập ý kiến xử lý"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" ng-click="vm.confirmAddComment()" class="btn btn-primary" data-dismiss="modal">Gửi</button>
+        </div>
+    </div>
+</script>
+
+<style>
+    .icon-arrow-up:before {
+        content: "\e607";
+        position: absolute;
+        top: 14px;
+        left: 10px;
+    }
+    
+    .comment p {
+        margin-bottom: 4px;
+    }
+</style>

@@ -1,0 +1,375 @@
+/**
+ * Created by nguyen the dat on 22/3/2018.
+ */
+(function () {
+    'use strict';
+
+    angular.module('Hrm.Document').controller('PolicyReguController', PolicyReguController);
+
+    PolicyReguController.$inject = [
+        '$rootScope',
+        '$scope',
+        'toastr',
+        '$timeout',
+        'settings',
+        'Utilities',
+        '$uibModal',
+        'PolicyReguService',
+        'Upload'
+    ];
+    
+    function PolicyReguController($rootScope, $scope, toastr, $timeout, settings, utils, modal, service,Upload) {
+        $scope.$on('$viewContentLoaded', function () {
+            // initialize core components
+            App.initAjax();
+        });
+
+        // set sidebar closed and body solid layout mode
+        $rootScope.settings.layout.pageContentWhite = true;
+        $rootScope.settings.layout.pageBodySolid = false;
+        $rootScope.settings.layout.pageSidebarClosed = false;
+
+        var vm = this;
+        vm.isChangePassword = false;
+        vm.staff = {};
+        vm.staffs = [];
+        vm.selectedStaffs = [];
+        vm.gender = null;
+        vm.genders = [
+            {value:'M',name:'Nam'},
+            {value:'F',name:'Nữ'},
+            {value:'U',name:'Khác'}
+        ];
+        vm.pageIndex = 1;
+        vm.pageSize = 25;
+
+        
+        function getEthnics() {
+            service.getEthnics().then(function (data) {
+                vm.ethnics = data.content;
+                console.log(data);
+            });
+        }
+
+        function getReligions() {
+            service.getReligions().then(function (data) {
+                vm.religions = data.content;
+                console.log(data);
+            });
+        }
+
+        function getRoles() {
+            service.getRoles().then(function (data) {
+                vm.roles = data.content;
+                console.log(data);
+            });
+        }
+        
+        vm.getStaffs = function () {
+            service.getStaffs(vm.pageIndex, vm.pageSize).then(function (data) {
+                vm.staffs = data.content;
+                console.log(data);
+                vm.bsTableControl.options.data = vm.staffs;
+                vm.bsTableControl.options.totalRows = data.totalElements;
+            });
+        };
+        vm.roles=[];
+        vm.countries=[];
+        vm.provinces=[];
+        vm.cities=[];
+        vm.subjects=[];
+        vm.ethnics = [];
+        vm.ethnic = null;
+        vm.religions = [];
+        vm.religion = null;
+        vm.roles = [];
+        vm.role = null;
+        getEthnics();
+        getReligions();
+        getRoles();
+        
+        vm.nameChange = function(){
+        	if(vm.staff != null){
+                if(!angular.isUndefined(vm.staff.lastName)){
+                    vm.staff.displayName = vm.staff.lastName;
+                }
+                if(!angular.isUndefined(vm.staff.firstName)){
+                    vm.staff.displayName = vm.staff.lastName + ' ' + vm.staff.firstName;
+                }
+                if(vm.staff.lastName == ''){
+                    vm.staff.displayName = vm.staff.displayName.trim();
+                }
+                if(vm.staff.firstName == ''){
+                    vm.staff.displayName = vm.staff.displayName.trim();
+                }
+                /*if(!angular.isUndefined(vm.staff.studentCode)){
+                    if(vm.staff.user == null){
+                        vm.staff.user = {};
+                    }
+                    vm.staff.user.username = vm.staff.studentCode;
+                }*/
+            }
+        }
+        
+        vm.getStaffs();
+
+        vm.bsTableControl = {
+            options: {
+                data: vm.staffs,
+                idField: 'id',
+                sortable: true,
+                striped: true,
+                maintainSelected: true,
+                clickToSelect: false,
+                showColumns: false,
+                showToggle: false,
+                pagination: true,
+                pageSize: vm.pageSize,
+                pageList: [5, 10, 25, 50, 100],
+                locale: settings.locale,
+                sidePagination: 'server',
+                columns: service.getTableDefinition(),
+                onCheck: function (row, $element) {
+                    $scope.$apply(function () {
+                        vm.selectedStaffs.push(row);
+                    });
+                },
+                onCheckAll: function (rows) {
+                    $scope.$apply(function () {
+                        vm.selectedStaffs = rows;
+                    });
+                },
+                onUncheck: function (row, $element) {
+                    var index = utils.indexOf(row, vm.selectedStaffs);
+                    if (index >= 0) {
+                        $scope.$apply(function () {
+                            vm.selectedStaffs.splice(index, 1);
+                        });
+                    }
+                },
+                onUncheckAll: function (rows) {
+                    $scope.$apply(function () {
+                        vm.selectedStaffs = [];
+                    });
+                },
+                onPageChange: function (index, pageSize) {
+                    vm.pageSize = pageSize;
+                    vm.pageIndex = index;
+
+                    vm.getStaffs();
+                }
+            }
+        };
+
+        /**
+         * New event account
+         */
+        vm.isAdd = false;
+    	vm.isEdit = false;
+    	vm.isView = false;
+        vm.checkViewUserTab = function(isAdd,isEdit,isView){
+        	vm.isAdd = isAdd;
+        	vm.isEdit = isEdit;
+        	vm.isView = isView;
+        }
+        vm.newStaff = function () {
+        	vm.checkViewUserTab(true,false,false);
+            vm.staff.isNew = true;
+//            vm.isChangePassword = true;
+            var modalInstance = modal.open({
+                animation: true,
+                templateUrl: 'edit_staff_modal.html',
+                scope: $scope,
+                size: 'lg'
+            });
+            
+            modalInstance.result.then(function (confirm) {
+                if (confirm == 'yes') {
+
+                    if (!vm.staff.staffCode || vm.staff.staffCode.trim() == '') {
+                        toastr.error('Vui lòng nhập mã công chức.', 'Lỗi');
+                        return;
+                    }
+
+//                    if (!vm.staff.displayName || vm.staff.displayName.trim() == '') {
+//                        toastr.error('Vui lòng nhập tên chức vụ.', 'Lỗi');
+//                        return;
+//                    }
+                    
+                    service.saveStaff(vm.staff, function success() {
+
+                        // Refresh list
+                        vm.getStaffs();
+
+                        // Notify
+                        toastr.info('Bạn đã tạo mới thành công một tài khoản.', 'Thông báo');
+
+                        // clear object
+                        vm.staff = {};
+                    }, function failure() {
+                        toastr.error('Có lỗi xảy ra khi thêm mới một tài khoản.', 'Thông báo');
+                    });
+                }
+            }, function () {
+                vm.staff = {};
+                console.log('Modal dismissed at: ' + new Date());
+            });
+//            vm.isChangePassword = false;
+        };
+
+        /**
+         * Edit a account
+         * @param accountId
+         */
+        $scope.editStaff = function (staffId) {
+        	vm.checkViewUserTab(false,true,false);
+            service.getStaff(staffId).then(function (data) {
+
+                vm.staff = data;
+                console.log(data);
+                vm.staff.isNew = false;
+
+                var modalInstance = modal.open({
+                    animation: true,
+                    templateUrl: 'edit_staff_modal.html',
+                    scope: $scope,
+                    size: 'lg'
+                });
+
+                modalInstance.result.then(function (confirm) {
+                    if (confirm == 'yes') {
+
+                        if (!vm.staff.staffCode || vm.staff.staffCode.trim() == '') {
+                            toastr.error('Vui lòng nhập mã chức vụ.', 'Lỗi');
+                            return;
+                        }
+                        service.updateStaff(staffId,vm.staff, function success() {
+                            // Refresh list
+                            vm.getStaffs();
+                            // Notify
+                            toastr.info('Bạn đã lưu thành công một bản ghi.', 'Thông báo');
+                            // clear object
+                            vm.staff = {};
+                        }, function failure() {
+                            toastr.error('Có lỗi xảy ra khi lưu thông tin tài khoản.', 'Lỗi');
+                        });
+                    }
+                }, function () {
+                    vm.staff = {};
+                    console.log('Modal dismissed at: ' + new Date());
+                });
+            });
+        };
+        vm.saveStaff = function(){
+        	alert('Save Staff');
+        }
+        /**
+         * Delete accounts
+         */
+        vm.deleteStaffs = function () {
+            var modalInstance = modal.open({
+                animation: true,
+                templateUrl: 'confirm_delete_modal.html',
+                scope: $scope,
+                size: 'md'
+            });
+
+            modalInstance.result.then(function (confirm) {
+                if (confirm == 'yes') {
+                    service.deleteStaffs(vm.selectedStaffs, function success() {
+
+                        // Refresh list
+                        vm.getStaffs();
+
+                        // Notify
+                        toastr.info('Bạn đã xóa thành công ' + vm.selectedStaffs.length + ' bản ghi.', 'Thông báo');
+
+                        // Clear selected accounts
+                        vm.selectedStaffs = [];
+                    }, function failure() {
+                        toastr.error('Có lỗi xảy ra khi xóa bản ghi.', 'Lỗi');
+                    });
+                }
+            }, function () {
+                console.log('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        //// Upload file
+        $scope.MAX_FILE_SIZE = '2MB';
+        $scope.f = null;
+        $scope.errFile = null;
+
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+        };
+
+        vm.baseUrl = settings.api.baseUrl + settings.api.apiV1Url;
+
+        vm.startUploadFile = function(file) {
+            console.log(file);
+            if (file) {
+                file.upload = Upload.upload({
+                    url: vm.baseUrl + 'hr/file/importStaff',
+                    data: {uploadfile: file}
+                });
+
+                file.upload.then(function (response) {
+                    console.log(response);
+                    file.result = response.data;
+                    vm.getStaffs();
+                    toastr.info('Import thành công.', 'Thông báo');
+                },function errorCallback(response) {
+                    toastr.error('Import lỗi.', 'Lỗi');
+                });
+            }
+        };
+
+        vm.importStaff = function () {
+            var modalInstance = modal.open({
+                animation: true,
+                templateUrl: 'import_modal.html',
+                scope: $scope,
+                size: 'md'
+            });
+
+            vm.student = {};
+            $scope.f = null;
+            $scope.errFile = null;
+
+            modalInstance.result.then(function (confirm) {
+                if (confirm == 'yes') {
+                    vm.startUploadFile($scope.f);
+                    console.log($scope.f);
+                }
+            }, function () {
+                vm.educationProgram = null;
+                vm.address = {};
+                console.log("cancel");
+            });
+        }
+
+        //search staff
+        function getStaffByCode(textSearch, pageIndex, pageSize) {
+            service.getStaffByCode(textSearch,pageIndex, pageSize).then(function (data) {
+                vm.staffs = data.content;
+                console.log(data);
+                vm.bsTableControl.options.data = vm.staffs;
+                vm.bsTableControl.options.totalRows = data.totalElements;
+            });
+        }
+        
+        vm.textSearch = '';
+        vm.searchByCode = function () {
+            vm.textSearch = String(vm.textSearch).trim();
+            if(vm.textSearch != ''){
+                getStaffByCode(vm.textSearch,vm.pageIndex,vm.pageSize);
+            }
+            if(vm.textSearch == ''){
+                vm.getStaffs();
+            }
+        }
+    }
+
+})();

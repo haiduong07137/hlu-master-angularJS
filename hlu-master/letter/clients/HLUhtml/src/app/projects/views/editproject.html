@@ -1,0 +1,121 @@
+<div modal-movable>
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="$dismiss()"
+			aria-hidden="true"></button>
+		<h4 class="modal-title bold" data-ng-if="vm.isNew == true">
+			<i class="icon-plus"></i> Thêm mới dự án
+		</h4>
+		<h4 class="modal-title bold" data-ng-if="vm.isNew == false">
+			<i class="fa fa-pencil-square-o"></i> Cập nhật dự án
+		</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-12 margin-top-10">
+				<label class="bold">Mã dự án:</label> <input
+					data-ng-model="vm.project.code" type="text" autofocus="autofocus"
+					class="form-control" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 margin-top-10">
+				<label class="bold">Tên dự án:</label> <input
+					data-ng-model="vm.project.name" type="text" autofocus="autofocus"
+					class="form-control" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 margin-top-20 margin-bottom-10">
+				<label class="bold">Mô tả: </label>
+				<textarea ui-tinymce="vm.tinymceOptions"
+					ng-model="vm.project.description"></textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div>
+				<div class="row form-group row margin-top-10">
+					<uib-tabset class="text-bold" active="activeForm"> <!--  ================= Tab 1 =================== -->
+					<!--  ====================================================== --> <uib-tab
+						index="0" heading="Danh sách người tham gia">
+					<div class="panel panel-default" style="border: solid 1px #cddbd1;">
+						<div class="panel-body">
+							<div class="col-md-12 margin-top-10">
+								<div class="col-md-12 list-person">
+									<table class="table table-striped"
+										ng-if="vm.members != null && vm.members.length > 0">
+										<tbody>
+											<tr ng-repeat="person in vm.members">
+												<td class="table-border-left"
+													style="border-left: 2px solid #f4f4f4 !important;">{{person.taskOwner.displayName}}</td>
+                                                 <td>   
+                                                    <ui-select ng-model="person.mainRole.code" sortable="true" close-on-select="true">
+                                                        <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="so.name as so in vm.taskRoles  | propsFilter: {name: $select.search}">
+                                                            <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                 </td>   													
+												<td><a ng-click="vm.removeProjectMember($index)">
+														Xóa </a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div ng-if="vm.isView != true">
+									<button type="button" class="btn btn-default btn-sm"
+										ng-click="vm.showModallistPerson()">
+										<span class="glyphicon glyphicon-plus"></span> Thêm người tham
+										gia
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</uib-tab> <uib-tab index="1" heading="File đính kèm">
+					<div class="panel panel-default" style="border: solid 1px #cddbd1;">
+						<!--  ================= Tab 2 =================== -->
+						<!--  ================================================ -->
+						<div class="panel-body">
+							<div class="row form-group">
+								<div class="row margin-top-10">
+									<div class="col-md-12">
+										<a class="no-content1 display-block link"
+											style="padding: 8px 0 !important; font-weight: 600 !important;"
+											ngf-select="vm.uploadFiles($file, $invalidFiles)"
+											accept="*/*" ngf-max-size="5MB"> <i
+											class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+										</a>
+									</div>
+									<div class="col-md-12 margin-top-10"
+										ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+										Có lỗi: <span class="bold"
+											ng-if="vm.errorFile.$error == 'maxSize'">Kích thước
+											tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span> <span
+											class="bold"
+											ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp
+											tin {{vm.errorFile.name}} không hợp lệ.</span>
+									</div>
+									<div class="row" ng-if="vm.project.attachments.length > 0">
+										<div class="col-md-12 margin-top-10">
+											<table id="bsTableControl4Files"
+												bs-table-control="vm.bsTableControl4Files"></table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					</uib-tab>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" ng-click="$dismiss()" class="btn btn-default"
+			data-dismiss="modal">Hủy bỏ</button>
+		<button type="button" ng-click="vm.CheckResult()"
+			class="btn btn-primary" data-dismiss="modal">Lưu</button>
+	</div>
+</div>

@@ -1,0 +1,75 @@
+<div class="modal-body" style="padding:0px;">
+    <div class="box-body box-profile" style="padding-bottom:0px;">
+        <div class="box-body">
+            <div class="row form-group">
+                <uib-tabset class="text-bold" active="activeForm">
+                    <div index="0" heading="Thêm sửa quá trình công tác">
+                        <!-- <div class="panel panel-default" style="border: solid 1px #cddbd1;"> -->
+                        <!--  ================= Personal information =================== -->
+                        <!--  ================================================ -->
+                        <div class="panel-heading text-left">Thêm sửa quá trình công tác</div>
+                        <div class="panel-body" style="padding: 10px 0px 0px 0px;">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <div class="col-md-2">
+                                            <label class="bold">Mã công chức </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.staff.staffCode" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Ngày bắt đầu </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.education.startDate" type="text" class="form-control" my-date-picker>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Ngày kết thúc </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.education.endDate" type="text" class="form-control" my-date-picker>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-2">
+                                            <label class="bold">Trường </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.education.schoolName" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Mô tả </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.education.description" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Trạng thái </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <ui-select data-ng-model="vm.education.status" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                                <ui-select-match allow-clear="true" placeholder="">
+                                                    {{$select.selected.name}}</ui-select-match>
+                                                <ui-select-choices repeat="status.value as status in vm.educationStatus | propsFilter: {name: $select.search}">
+                                                    <div class="bold" ng-bind-html="status.name | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary pull-right" ng-if="vm.staff.isNew" ng-click="vm.saveEducationHistory()">Thêm</button>
+                                            <button class="btn btn-primary pull-right" ng-if="!vm.staff.isNew" ng-click="vm.saveEducationHistory()">Lưu</button>
+                                        </div>
+                                    </div>
+                                    <!-- <table id="bsTableAgreementControl  " bs-table-control="vm.bsTableAgreementControl"></table> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

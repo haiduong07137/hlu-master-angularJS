@@ -1,0 +1,31 @@
+ <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i> Thêm comment </h4>
+        </div>
+        <div class="modal-body clearfix">
+
+					<div class="col-md-12">
+						<h4 class="bold">Chọn người góp ý:</h4>
+						<ui-select ng-model="vm.participatesComment"
+							on-select="vm.onParticipatesCommentChange()" sortable="true"
+							close-on-select="true" style="width: 100% !important;">
+						<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.displayName}}</ui-select-match>
+						<ui-select-choices
+							repeat="person in vm.listParticipatesComment | propsFilter: {displayName: $select.search}">
+						<div class="bold"
+							ng-bind-html="person.displayName | highlight: $select.search"></div>
+						</ui-select-choices> </ui-select>
+					</div>
+					
+				<div class="col-md-12 margin-top-30 margin-bottom-10">
+					<label class="bold">Nội dung góp ý: </label>
+					<textarea ui-tinymce="vm.tinymceOptions"
+						ng-model="vm.comment"></textarea>
+				</div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="vm.cancelAddComment()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="vm.saveCommnet()" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>

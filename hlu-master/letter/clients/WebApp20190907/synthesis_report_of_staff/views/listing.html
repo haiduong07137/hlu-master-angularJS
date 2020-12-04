@@ -1,0 +1,121 @@
+<!-- BEGIN PAGE HEADER-->
+<!-- author Giang 21/04/2018 -->
+<div class="page-bar">
+	<h3 class="page-title pull-left">
+		<i class="icon-layers"></i>Quản lý thời gian biểu
+	</h3>
+</div>
+
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+	<div class="col-md-12">
+
+		<div class="portlet light bordered">
+			<div class="portlet-body">
+				<div class="col-md-5" style="float: right;">
+					<div class="input-group">
+						<input type="text" data-ng-model="vm.textSearch"
+							class="form-control" placeholder="Tìm theo tên hoặc mã nhân sự"
+							name="search"
+							ng-keydown="$event.keyCode === 13 && vm.searchByDto()">
+						<div class="input-group-btn">
+							<button ng-click="vm.searchByDto()" class="btn btn-default"
+								type="submit">
+								<i class="glyphicon glyphicon-search"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="col-md-3">
+							<input placeholder="Từ ngày" type="text" class="form-control"
+								ng-model="vm.startDatefilter"
+								data-ng-value="vm.startDatefilter | date: 'dd/MM/yyyy'"
+								my-date-picker />
+						</div>
+						<div class="col-md-3">
+							<input placeholder="Đến ngày" type="text" class="form-control"
+								ng-model="vm.endDatefilter"
+								data-ng-value="vm.endDatefilter | date: 'dd/MM/yyyy'"
+								my-date-picker />
+						</div>
+						<div class="btn-group pull-left">
+							<button class="btn btn-primary" data-ng-click="vm.searchByDto()">
+								<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+							</button>
+						</div>
+					</div>
+				</div>
+				<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.modal-md {
+	width: 60%;
+}
+
+.modal-sm {
+	width: 50%;
+}
+
+.checkbox label:after, .radio label:after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.checkbox .cr, .radio .cr {
+	position: relative;
+	display: inline-block;
+	border: 1px solid #a9a9a9;
+	border-radius: .25em;
+	width: 1.3em;
+	height: 1.3em;
+	float: left;
+	margin-right: .5em;
+}
+
+.radio .cr {
+	border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon, .radio .cr .cr-icon {
+	position: absolute;
+	font-size: .8em;
+	line-height: 0;
+	top: 50%;
+	left: 20%;
+}
+
+.radio .cr .cr-icon {
+	margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"], .radio label input[type="radio"]
+	{
+	display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon, .radio label input[type="radio"]+.cr>.cr-icon
+	{
+	transform: scale(3) rotateZ(-20deg);
+	opacity: 0;
+	transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon, .radio label input[type="radio"]:checked+.cr>.cr-icon
+	{
+	transform: scale(1) rotateZ(0deg);
+	opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr, .radio label input[type="radio"]:disabled+.cr
+	{
+	opacity: .5;
+}
+</style>
+<!-- BEGIN MAIN JS -->

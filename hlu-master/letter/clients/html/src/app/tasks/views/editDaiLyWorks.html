@@ -1,0 +1,258 @@
+<style>
+.modal-body {
+	padding: 0px;
+}
+</style>
+
+<div class="modal-body nopadding">
+	<div class="panel panel-default" style="border: solid 1px #cddbd1;">
+		<button type="button" class="close" ng-click="$dismiss()"
+			style="margin: 15px;" aria-hidden="true"></button>
+		<div class="panel-heading bold" style="font-size: 16px;"
+			ng-if="vm.isNew == true">
+			<i class="icon-plus"></i> Thêm mới công việc hằng ngày
+		</div>
+		<div class="panel-heading bold" style="font-size: 16px;"
+			ng-if="vm.isNew != true && isView">
+			<span class="glyphicon glyphicon-pencil"></span> Chỉnh sửa công việc hằng ngày
+		</div>
+		<div class="panel-heading bold" style="font-size: 16px;"
+			ng-if="vm.isNew != true && isView">
+			<span class="glyphicon glyphicon-pencil"></span> Xem công việc hằng ngày
+		</div>
+
+		<div class="panel-body" style="padding-top: 0px;">
+			<div class="row">
+				<div class="col-md-12 margin-top-10">
+					<div class="row">
+						<div class="col-md-12 margin-top-10">
+							<label class="bold">Tên công việc: </label> <input ng-disabled="isView"
+								data-ng-model="vm.task.name" type="text" autofocus="autofocus"
+								class="form-control" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 margin-top-20 margin-bottom-10">
+							<label class="bold">Mô tả: </label>
+							<textarea ui-tinymce="vm.tinymceOptions" ng-disabled="isView"
+								ng-model="vm.task.description"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<label class="bold">Ngày bắt đầu: </label>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-disabled="isView"
+									uib-datepicker-popup="{{format}}" ng-model="vm.task.dateStart"
+									is-open="popup1.opened" datepicker-options="dateOptions"
+									datetime="dd/MM/yyyy" enable-time="true" ng-required="true"
+									show-button-bar="false" close-text="Close"
+									alt-input-formats="altInputFormats" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-if="!isView"
+										ng-click="open1()">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-md-offset-1">
+							<label class="bold">Ngày kết thúc: </label>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-disabled="isView"
+									uib-datepicker-popup="{{format}}" ng-model="vm.task.dateDue"
+									is-open="popup2.opened" datepicker-options="dateOptions"
+									datetime="dd/MM/yyyy" ng-required="true"
+									show-button-bar="false" close-text="Close"
+									alt-input-formats="altInputFormats" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-if="!isView"
+										ng-click="open2()">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+
+						<!-- <div class="col-md-3 col-md-offset-1">
+					<label class="bold">Thời gian: </label> <input
+						data-ng-model="vm.task.duration" type="number"
+						autofocus="autofocus" class="form-control" />
+				</div> -->
+
+						<div class="col-md-3 col-md-offset-1">
+							<label class="bold">Thời gian ước tính (Giờ): </label> <input ng-disabled="isView"
+								data-ng-model="vm.task.estimateTime" type="number"
+								autofocus="autofocus" class="form-control" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 margin-top-10">
+							<label class="bold">Trạng thái: </label>
+							<ui-select ng-model="vm.task.currentStep" sortable="true" ng-disabled="isView"
+								close-on-select="true" style="width: 100% !important;">
+							<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}
+							</ui-select-match> <ui-select-choices
+								repeat="step in vm.listStepByFlow | propsFilter: {name: $select.search}">
+							<div class="bold"
+								ng-bind-html="step.name | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+						</div>
+
+						<div class="col-md-6 margin-top-10">
+							<label class="bold">Mức độ ưu tiên: </label>
+							<ui-select ng-model="vm.task.priority" sortable="true" ng-disabled="isView"
+								close-on-select="true" style="width: 100% !important;">
+							<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}
+							</ui-select-match> <ui-select-choices
+								repeat="priority in vm.prioritys | propsFilter: {name: $select.search}">
+							<div class="bold"
+								ng-bind-html="priority.name | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 margin-top-10">
+							<label class="bold">Chủ trì: </label>
+							<div class="col-md-12 list-person">
+								<table class="table table-striped"
+									ng-if="vm.participateChairman != null && vm.participateChairman.taskOwner != null">
+									<tbody>
+										<tr>
+											<td class="table-border-left"
+												style="border-left: 2px solid #f4f4f4 !important;">
+												{{vm.participateChairman.taskOwner.displayName}}</td>
+											<td><a ng-click="vm.taskOwnerChairmanRemove()" ng-if="!isView"> Xóa </a></td>
+										</tr>
+									</tbody>
+								</table>
+								<div ng-if="vm.isView != true">
+									<button type="button" class="btn btn-default btn-sm" ng-if="!isView"
+										ng-click="vm.showModalChairPerson()">
+										<span class="glyphicon glyphicon-plus"></span> Chọn chủ trì
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6 margin-top-10">
+							<label class="bold">Người tham gia: </label>
+							<div class="col-md-12 list-person">
+								<table class="table table-striped"
+									ng-if="vm.listParticipateProcess != null && vm.listParticipateProcess.length > 0">
+									<tbody>
+										<tr ng-repeat="participateProcess in vm.listParticipateProcess">
+											<td class="table-border-left"
+												style="border-left: 2px solid #f4f4f4 !important;">
+												{{participateProcess.taskOwner.displayName}}</td>
+											<td><a ng-click="vm.ortherPersonRemove($index)" ng-if="!isView"> Xóa
+											</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div ng-if="vm.isView != true">
+								<button type="button" class="btn btn-default btn-sm" ng-if="!isView"
+									ng-click="vm.showModallistPerson()">
+									<span class="glyphicon glyphicon-plus"></span> Thêm người tham
+									gia
+								</button>
+							</div>
+						</div>
+
+					</div>
+
+					<div>
+						<div class="row form-group row margin-top-10">
+							<uib-tabset class="text-bold" active="activeForm"> <!--  ================= Tab 1 =================== -->
+							<!--  ====================================================== -->
+							<uib-tab index="0" heading="Đóng góp ý kiến">
+							<div class="panel panel-default"
+								style="border: solid 1px #cddbd1;">
+								<!-- <div class="panel-heading text-center"> Đăng ký</div> -->
+								<div class="panel-body">
+									<div class="row margin-top-10">
+										<div class="col-md-12">
+											<button type="button" class="btn btn-default"
+												ng-if="vm.isNew != true && vm.task.hasCommentPermission" ng-click="vm.addComment()">Thêm
+												comment</button>
+										</div>
+										<div class="row" ng-if="vm.listComment.length > 0">
+											<div class="col-md-12 margin-top-10">
+												<table id="bsTableControlComment"
+													bs-table-control="vm.bsTableControlComment"></table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							</uib-tab> <uib-tab index="1" heading="File đính kèm">
+							<div class="panel panel-default"
+								style="border: solid 1px #cddbd1;">
+								<!--  ================= Tab 2 =================== -->
+								<!--  ================================================ -->
+								<div class="panel-body">
+									<div class="row margin-top-10 form-group">
+											<div>
+												<a class="no-content1 display-block link" ng-if="!isView"
+													style="padding: 8px 0 !important; font-weight: 600 !important;"
+													ngf-select="vm.uploadFiles($file, $invalidFiles)"
+													accept="*/*" ngf-max-size="5MB"> <i
+													class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+												</a>
+											</div>
+											<div class="margin-top-10"
+												ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+												Có lỗi: <span class="bold"
+													ng-if="vm.errorFile.$error == 'maxSize'">Kích thước
+													tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span> <span
+													class="bold"
+													ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp
+													tin {{vm.errorFile.name}} không hợp lệ.</span>
+											</div>
+											<div class="margin-top-10" ng-if="vm.task.attachments.length > 0">
+												<table class="table table-striped text-center">
+					                                <thead>
+					                                    <tr>
+					                                        <th>STT</th>
+					                                        <th>Tệp tin</th>
+					                                        <th>Kích thước tệp tin</th>
+					                                        <th>Hành động</th>
+					                                    </tr>
+					                                </thead>
+					                                <tbody>
+					                                    <tr ng-repeat="s in vm.task.attachments">
+					                                        <td>{{$index + 1}}</td>
+					                                        <td>{{s.file.name}}</td>
+					                                        <td>{{(s.file.contentSize/1024).toFixed(0)}}KB</td>
+					                                        <td>
+					                                            <a class="text-danger margin-right-10" title="Xóa tệp tin" href="#" data-ng-click="$parent.deleteDocument($index)"><i class="icon-trash"></i></a>
+					               								<a class="green-dark margin-right-10" title="Tải về" href="#" data-ng-click="$parent.downloadDocument($index)"><i class="icon-cloud-download"></i></a>
+					                							<a class="green-dark" title="Xem tài liệu" href="#" data-ng-click="$parent.viewDocument($index)"><i class="icon-info"></i></a>
+					                                        </td>
+					                                    </tr>
+					                                </tbody>
+					                            </table>
+											</div>
+									</div>
+								</div>
+							</div>
+							</uib-tab>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default"
+				data-dismiss="modal">Hủy bỏ</button>
+			<button type="button" ng-click="vm.saveDaiLyWorks()" ng-if="!isView"
+				class="btn btn-primary" data-dismiss="modal">Lưu</button>
+		</div>
+	</div>
+</div>

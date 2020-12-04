@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding="UTF-8" ?>
+<task-roles>
+	<task-role>
+		<task-role-code>ClerkRole</task-role-code>
+		<description>Role văn thư</description>
+	</task-role>	
+	<task-role>
+		<task-role-code>FowardRole</task-role-code>
+		<description>Role phân luồng văn bản</description>
+	</task-role>
+	<task-role>
+		<task-role-code>AssignerRole</task-role-code>
+		<description>Role giao việc</description>
+	</task-role>
+	<task-role>
+		<task-role-code>ChairmanRole</task-role-code>
+		<description>Role chủ trì xử lý văn bản</description>
+	</task-role>
+	<task-role>
+		<task-role-code>ProcessRole</task-role-code>
+		<description>Role xử lý văn bản</description>
+	</task-role>
+	<task-role>
+		<task-role-code>ManagerRole</task-role-code>
+		<description>Vai trò trưởng phòng</description>
+	</task-role>
+	<task-role>
+		<task-role-code>DraftersRole</task-role-code>
+		<description>Vai trò chuyên viên</description>
+	</task-role>
+	<task-role>
+		<task-role-code>ChiefOfStaffRole</task-role-code>
+		<description>Vai trò chánh văn phòng</description>
+	</task-role>
+	<task-role>
+		<task-role-code>ChairmanCalendarRole</task-role-code>
+		<description>Role chủ trì xử lý lịch</description>
+	</task-role>
+	<task-role>
+	<task-role-code>ManagerCalendarRole</task-role-code>
+		<description>Role quản lý lịch</description>
+	</task-role>
+	<task-role>
+	<task-role-code>StaffRole</task-role-code>
+		<description>Vai trò nhân viên tham gia</description>
+	</task-role>
+</task-roles>

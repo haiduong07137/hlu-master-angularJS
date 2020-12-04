@@ -1,0 +1,69 @@
+<div class="modal-body" style="padding:0px;">
+    <div class="box-body box-profile" style="padding-bottom:0px;">
+        <div class="box-body">
+            <div class="row form-group">
+                <uib-tabset class="text-bold" active="activeForm">
+                    <div index="0" heading="Thêm sửa tiểu sử gia đình">
+                        <!-- <div class="panel panel-default" style="border: solid 1px #cddbd1;"> -->
+                        <!--  ================= Personal information =================== -->
+                        <!--  ================================================ -->
+                        <div class="panel-heading text-left">Thêm sửa tiểu sử gia đình</div>
+                        <div class="panel-body" style="padding: 10px 0px 0px 0px;">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <div class="col-md-2">
+                                            <label class="bold">Mã công chức </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.staff.staffCode" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Họ và tên </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.familyRelationship.fullName" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Ngày sinh </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.familyRelationship.birthDate" type="text" class="form-control" my-date-picker>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-2">
+                                            <label class="bold">Nghề nghiệp </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.familyRelationship.profession" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Địa chỉ </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.familyRelationship.address" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="bold">Mô tả </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input data-ng-model="vm.familyRelationship.description" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary pull-right" ng-if="vm.staff.isNew" ng-click="vm.saveFamilyRelationship()">Thêm</button>
+                                            <button class="btn btn-primary pull-right" ng-if="!vm.staff.isNew" ng-click="vm.saveFamilyRelationship()">Lưu</button>
+                                        </div>
+                                    </div>
+                                    <!-- <table id="bsTableAgreementControl  " bs-table-control="vm.bsTableAgreementControl"></table> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

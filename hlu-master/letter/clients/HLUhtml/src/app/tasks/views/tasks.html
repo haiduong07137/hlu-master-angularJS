@@ -1,0 +1,131 @@
+<style>
+#bsTableControl tr.selected a, #bsTableControl tr.selected>td a {
+	color: #000;
+}
+
+.portlet label {
+	margin-top: 8px;
+	text-align: right;
+}
+
+.isDisabled>a {
+	color: currentColor;
+	cursor: not-allowed;
+	/* opacity: 0.5; */
+	text-decoration: none;
+}
+
+.isDisabled>a>i {
+	color: #757C7F;
+}
+</style>
+<div class="row margin-top-10">
+	<div class="col-md-12">
+
+		<div class="portlet light bordered">
+			<div class="portlet-body">
+				<div class="btn-group pull-left margin-top-10 margin-bottom-10">
+					<button class="btn btn-default" data-ng-click="vm.newTask()">
+						<i class="fa fa-plus-circle"></i>Giao việc
+					</button>
+					<button class="btn btn-danger margin-left-10"
+						data-ng-click="vm.deleteTasks()"
+						data-ng-disabled="vm.selectedTasks.length <= 0">
+						<i class="fa fa-trash"></i>Xóa
+					</button>
+				</div>
+
+				<div class="col-md-3 margin-top-10 col-md-offset-1">
+					<div class="form-group row">
+						<label class="col-sm-5 col-form-label" style="color: #000;">Loại công việc: </label>
+						<div class="col-sm-7">
+							<ui-select ng-model="vm.flowId"
+								on-select="vm.onTaskSelectedChange()" sortable="true"
+								close-on-select="true" style="width: 100% !important;">
+							<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{
+							$select.selected.name }}</ui-select-match> <ui-select-choices
+								repeat="flow.id as flow in vm.taskFlows | propsFilter: {name: $select.search}">
+							<div class="bold"
+								ng-bind-html="flow.name | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3 margin-top-10">
+					<div class="form-group row">
+						<label class="col-sm-5 col-form-label" style="color: #000;">Trạng thái: </label>
+						<div class="col-sm-7">
+							<ui-select ng-model="vm.currentStepIdByFlow"
+								on-select="vm.onCurrentStepSelectedChange()" sortable="true"
+								close-on-select="true" style="width: 100% !important;">
+							<ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{
+							$select.selected.name }}</ui-select-match> <ui-select-choices
+								repeat="step.id as step in vm.searchListStepByFlow | propsFilter: {name: $select.search}">
+							<div class="bold"
+								ng-bind-html="step.name | highlight: $select.search"></div>
+							</ui-select-choices> </ui-select>
+						</div>
+					</div>
+				</div>
+
+				<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/ng-template" id="edit_task_modal.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/editTask.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="edit_DaiLyWorks_modal.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/editDaiLyWorks.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="edit_LetterInDocument_modal.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/editLetterInDocument.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="edit_LetterOutDocument_modal.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/editLetterOutDocument.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="taskOwnerChairmanSelect.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/taskOwnerChairmanSelect.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="taskOwnerProcessSelect.html">
+    <div modal-movable>
+        <div ng-include="'tasks/views/taskOwnerProcessSelect.html'" modal-movable></div>
+    </div>
+</script>
+<script type="text/ng-template" id="addComment.html">
+    <div modal-movable>
+		<div ng-include="'tasks/views/addComment.html'" modal-movable></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>Xóa</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <p>Bạn có chắc chắn muốn xóa công việc đã chọn không?</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>

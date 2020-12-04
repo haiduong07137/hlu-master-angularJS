@@ -1,0 +1,261 @@
+<div class="col-md-12 margin-top-30">
+    <section id="content">
+        <div class="content-wrap tight">
+            <div class="container clearfix">
+                <div class="sidebar col-md-3 nobottommargin col_last clearfix">
+                    <div class="sidebar-widgets-wrap">
+                        <div class="widget_links customed clearfix">
+                            <!-- <h3>Chuyên mục tin</h3> -->
+                            <ul>
+                            	<li ng-class="{'check' : vm.category.id == null}" style="margin: 0px 0px 0px 20px; font-size:20px">
+                                    <a href="#" ng-click="vm.linkToNewsByCategory(cate.id)"><span>» Tất cả tin tức</span></a>
+                                </li>
+                                <li ng-class="{'check' : vm.category.id == cate.id}" style="margin: 0px 0px 0px 20px; font-size:20px" ng-repeat="cate in vm.listCategory">
+                                    <a href="#" ng-click="vm.linkToNewsByCategory(cate.id)"><span ng-bind-html="'» '+cate.title"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 postcontent nobottommargin clearfix">
+                    <div class="single-post bottommargin-sm">
+                        <div class="entry clearfix">
+                            <div class="entry-title">
+                                <h2 class="bold" style="color: #036dbc"><span ng-bind-html="vm.news.title"></span></h2>
+                            </div>
+                            <ul class="entry-meta clearfix">
+                                <li><span ng-bind-html="vm.news.publishDate | date:'dd/MM/yyyy'"></span></li>
+                                <li class="li" ng-repeat="cate in vm.news.categories">
+                                    <span ng-bind-html="cate.category.title"></span>
+                                </li>
+                            </ul>
+                            <div class="entry-content topmargin-sm">
+                                <span style="text-align:justify" ng-bind-html="vm.news.content"></span>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="sidebar col-md-1 nobottommargin col_last clearfix"></div>
+                <div class="sidebar col-md-3 nobottommargin col_last clearfix">
+                    <div class="sidebar-widgets-wrap">
+                        <div class="widget_links customed clearfix margin-bottom-20">
+                            <h3><i class="glyphicon glyphicon-bullhorn text-muted"></i> Tin mới</h3>
+                            <div id="post-list-footer">
+                                <div class="spost clearfix" ng-repeat="item in vm.listNewsMenuRight">
+                                    <div class="entry-image" ng-if="item.titleImageUrl != null">
+                                        <a href="#" class="nobg" ng-click="vm.linkToDetail(item.id)"><img ng-src="{{settings.api.baseUrl}}public/download/eventfile/{{item.titleImageUrl}}" alt=""></a>
+                                    </div>
+                                    <div class="entry-c">
+                                        <div class="entry-title">
+                                            <h4><a href="#" ng-click="vm.linkToDetail(item.id)"><span ng-bind-html="item.title"></span></a></h4>
+                                        </div>
+                                        <div class="entry-metaa">
+                                            <span>Ngày đăng </span><span ng-bind-html="item.publishDate | date:'dd/MM/yyyy':'UTC+7'"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget clearfix">
+                            <h3><i class="glyphicon glyphicon-fire text-muted"></i> Tin đọc nhiều</h3>
+                            <div id="post-list-footer2">
+                                <div id="post-list-footer2">
+                                    <div id="post-list-footer">
+                                        <div class="spost clearfix" ng-repeat="item in vm.listCmsArticleOrderByViewDESC">
+                                            <div class="entry-image" ng-if="item.titleImageUrl != null">
+                                                <a href="#" class="nobg" ng-click="vm.linkToDetail(item.id)"><img ng-src="{{settings.api.baseUrl}}public/download/eventfile/{{item.titleImageUrl}}" alt=""></a>
+                                            </div>
+                                            <div class="entry-c">
+                                                <div class="entry-title">
+                                                    <h4><a href="#" ng-click="vm.linkToDetail(item.id)"><span ng-bind-html="item.title"></span></a></h4>
+                                                </div>
+                                                <div class="entry-metaa">
+                                                    <span>Ngày đăng </span><span ng-bind-html="item.publishDate | date:'dd/MM/yyyy':'UTC+7'"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+a:hover {
+	text-decoration: none;
+}
+.entry-content p{
+	margin:10px 0;
+	font-size:16px;
+	font-weight:400
+}
+.small-thumbs .entry-image, .ievent .entry-image {
+    float: left;
+    width: 300px;
+    margin: 0 30px 0 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    height: auto;
+}
+.entry {
+    position: relative;
+    margin: 0 0 15px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+.small-thumbs .entry-image img, .ievent .entry-image img {
+    border-radius: 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+a img {
+    border: none;
+}
+img {
+    max-width: 100%;
+}
+img {
+    vertical-align: middle;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-size: 20px;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-weight: 600;
+}
+.entry-title h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+h2 {
+    font-size: 30px;
+    color: #444;
+    line-height: 1.5;
+    font-family: 'Muli', sans-serif;
+}
+.entry-c {
+    position: relative;
+    overflow: hidden;
+}
+.entry-meta {
+    margin: 0px 0px 10px 0px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+}
+.entry-metaa {
+    margin: 0px 0px 10px 0px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+}
+.entry-meta li {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 10px 15px 0;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+    /* font-style: italic; */
+}
+ul{
+    font-family: 'Muli', sans-serif;
+    padding: 0;
+}
+#content p {
+    line-height: 1.8;
+}
+.entry-content p {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 400;
+}
+.single-post .entry-meta {
+    margin-bottom: 20px;
+}
+.entry-meta li {
+    float: left;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 10px 15px 0;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+    /* font-style: italic; */
+}
+.entry-meta .li:before {
+    content: '/';
+    display: inline-block;
+    margin-right: 10px;
+    opacity: 0.5;
+}
+.entry-meta {
+    margin: 10px -10px -15px 0;
+    list-style: none;
+}
+.spost .entry-image, .spost .entry-image a, .spost .entry-image img, .spost .entry-image i {
+    width: 50px;
+    height: 50px;
+}
+.spost, .mpost {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #E5E5E5;
+}
+.spost .entry-image, .mpost .entry-image {
+    float: left;
+    margin: 0 15px 0 0;
+    text-align: center;
+}
+h3 {
+	margin-bottom:20px;
+}
+.spost:first-child, .mpost:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+.spost .entry-title h4, .mpost .entry-title h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+.entry-c {
+    position: relative;
+    overflow: hidden;
+}
+.sidebar-widgets-wrap .widget {
+    padding-top: 50px;
+    border-top: 1px solid #EEE;
+}
+.widget {
+    position: relative;
+}
+.widget_nav_menu > ul, .widget_links > ul, .widget_meta > ul, .widget_archive > ul, .widget_recent_comments > ul, .widget_recent_entries > ul, .widget_categories > ul, .widget_pages > ul, .widget_rss > ul {
+    margin-top: -4px !important;
+}
+.widget_nav_menu ul, .widget_nav_menu li, .widget_links ul, .widget_links li, .widget_meta ul, .widget_meta li, .widget_archive ul, .widget_archive li, .widget_recent_comments ul, .widget_recent_comments li, .widget_recent_entries ul, .widget_recent_entries li, .widget_categories ul, .widget_categories li, .widget_pages ul, .widget_pages li, .widget_rss ul, .widget_rss li {
+    list-style: none;
+    margin: 0;
+}
+.widget_nav_menu li, .widget_links li, .widget_meta li, .widget_archive li, .widget_recent_comments li, .widget_recent_entries li, .widget_categories li, .widget_pages li, .widget_rss li {
+    padding: 4px;
+}
+</style>

@@ -1,0 +1,73 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row">
+                    	<div class="col-md-12" style="padding: 0px 20px 20px 20px;">
+                        <div class="col-md-2" style="padding-left: 0px;">
+                            <label class="bold">Loại văn bản</label>
+                            <ui-select ng-model="vm.searchObject.documentTypeId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;" search-enabled="true">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="so.id as so in vm.documentTypeIds  | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="bold">Lĩnh vực văn bản</label>
+                            <ui-select ng-model="vm.searchObject.letterDocFieldId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="so.id as so in vm.letterDocFieldIds  | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+				            <label class="bold">Cơ quan liên quan</label>
+								<input class="form-check-input" type="checkbox" ng-disabled="vm.isDisabled()" style="display:inline-block; vertical-align: sub; margin-left: 30px; margin-right: 3px;" ng-model="vm.isOtherIssueOrgan" ng-click="vm.clear()" id="isOtherIssueOrgan">
+								<label class="form-check-label"  style="display:inline-block; font-weight:normal !important; color:#333 !important;" for="isOtherIssueOrgan"> Khác</label>
+								<div style="width: 100%" ng-if="!vm.isOtherIssueOrgan">
+							        <ui-select ng-model="vm.searchObject.issueOrgan" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;">
+		                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.text}}</ui-select-match>
+		                                <ui-select-choices repeat="so.id as so in vm.organizations  | propsFilter: {text: $select.search}">
+		                                    <div class="bold" ng-bind-html="so.text | highlight: $select.search"></div>
+		                                </ui-select-choices>
+		                            </ui-select>
+							    </div>
+								<div class="input-group" style="width: 100%" ng-if="vm.isOtherIssueOrgan">
+									<input style="padding-left: 5px; font-size: 18px;" data-ng-model="vm.searchObject.otherIssueOrgan" ng-keypress="vm.enterSearchCode()" type="text" ng-disabled="vm.isDisabled()" class="form-control" />
+				                </div>
+							</div>
+                        <div class="col-md-2">
+							<label class="bold">Từ ngày</label>
+							<input style="font-size: 18px" my-date-picker ng-disabled="vm.isDisabled()" ng-keypress="vm.enterSearchCode()" class="form-control" ng-model="vm.searchObject.dateFrom" type="text">
+						</div>
+						<div class="col-md-2" style="padding-right: 0px;">
+							<label class="bold">Đến ngày</label>
+							<input style="font-size: 18px" my-date-picker ng-disabled="vm.isDisabled()" ng-keypress="vm.enterSearchCode()" class="form-control" ng-model="vm.dateTo" type="text">
+						</div>
+                   	</div>
+                    <div class="col-md-12" style="padding: 0px 20px 0px 20px;">
+                        <div class="input-group br">
+                            <input class="form-control search ng-pristine ng-untouched ng-valid ng-empty" type="text" ng-keypress="vm.enterSearchCode()" data-ng-model="vm.searchObject.text" placeholder="Tìm kiếm theo số hiệu văn bản hoặc trích yếu"> 
+                            <div class="input-group-btn">
+	         					<div class="btn-group dropup">
+	             					<button class="btn btn-primary" type="submit" ng-click="vm.searchByText()"><span class="glyphicon glyphicon-search"></span> Tìm</button>
+	                         	</div>
+	                         	<button class="btn btn-default" data-ng-click="vm.importDocument()"><i class="fa fa-cloud-upload"></i> Import</button>
+                        	</div>
+                    	</div>
+                   	</div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+	color:rgb(8, 8, 8); 
+}
+</style>

@@ -1,0 +1,214 @@
+<div class="cus-form">
+	<div class="row">
+        <div class="col-md-12">
+			<label class="bold"><span class="impor">*  </span>Tiêu đề văn
+				bản</label> <input style="font-size: 18px;" class="form-control"
+				type="text" ng-model="vm.letterIn.title"
+				ng-disabled="vm.isDisabled()">
+		</div>
+	</div>
+	<div class="row" ng-if="vm.check() == true">
+		<!-- <div class="col-md-12">
+            <object data="{{content}}" type="application/pdf"></object>
+        </div> -->
+		<div class="col-md-3">
+			<!-- pattern="(\d+|(\d+|\w+|\w+\-w+))((\/*)(\w+\-\w+|\w+))+" -->
+			<label class="bold"><span class="impor">* </span>Số ký hiệu
+				văn bản</label> <input style="font-size: 18px" class="form-control"
+				type="text" ng-model="vm.letterIn.docOriginCode"
+				ng-disabled="vm.isDisabled()">
+		</div>
+		<div class="col-md-4">
+			<label class="bold">Số nội bộ</label>
+			<input style="font-size: 18px;" class="form-control" type="text" ng-readonly="!vm.isOtherDocCode" ng-model="vm.letterIn.docCode">
+		</div>
+		<div class="col-md-5">
+			<label class="bold">Phúc đáp/Thay thế văn bản</label> <input
+				style="font-size: 18px" class="form-control"
+				ng-model="vm.letterIn.refDocOriginCode" type="text"
+				ng-disabled="vm.isDisabled()">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<label class="bold">Trích yếu</label>
+			<textarea style="font-size: 18px" class="form-control textarea-size"
+				ng-model="vm.letterIn.briefNote" ng-disabled="vm.isDisabled()"></textarea>
+			<div ng-if="vm.letterIn.briefNote.length > 1000">
+				<small class="text-danger">Trích yếu nội dung không được quá
+					1000 ký tự</small>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="vm.check() == true">
+		<div class="col-md-4">
+			<label class="bold"><span class="impor">* </span>Nhóm vào sổ
+				văn bản</label>
+			<ui-select ng-model="vm.letterIn.letterDocBookGroup" sortable="true"
+				close-on-select="true" ng-change="vm.letterDocBookGroupSelected()"
+				ng-disabled="vm.isDisabled()"> <ui-select-match
+				allow-clear="true" placeholder="Xin mời chọn...">
+			{{$select.selected.name}} </ui-select-match> <ui-select-choices
+				repeat="so in vm.docBookGroups  | propsFilter: {name: $select.search}">
+			<div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+			</ui-select-choices> </ui-select>
+
+		</div>
+		<div class="col-md-4">
+			<label class="bold"><span class="impor">* </span>Sổ văn bản</label>
+			<ui-select ng-model="vm.letterIn.letterDocBook" sortable="true"
+				close-on-select="true" ng-change="vm.letterDocBookSelected()"
+				ng-disabled="vm.isDisabled()"> <ui-select-match
+				allow-clear="true" placeholder="Xin mời chọn...">
+			{{$select.selected.name}} </ui-select-match> <ui-select-choices
+				repeat="so in vm.docBooks  | propsFilter: {name: $select.search}">
+			<div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+			</ui-select-choices> </ui-select>
+		</div>
+
+		<div class="col-md-4">
+			<label class="bold"><span class="impor">* </span>Loại văn bản</label>
+			<ui-select ng-model="vm.letterIn.letterDocumentType" sortable="true"
+				close-on-select="true" style="width: 100% !important;"
+				ng-disabled="vm.isDisabled()"> <ui-select-match
+				allow-clear="true" placeholder="Xin mời chọn...">
+			{{$select.selected.name}} </ui-select-match> <ui-select-choices
+				repeat="so in vm.documentTypes  | propsFilter: {name: $select.search}">
+			<div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+			</ui-select-choices> </ui-select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-2" ng-if="vm.check() == true">
+		<label class="bold"><span class="impor">* </span>Ngày đi</label> <input style="font-size: 18px"
+			my-date-picker ng-disabled="vm.isDisabled()" class="form-control"
+			ng-model="vm.letterIn.deliveredDate" type="text">
+	</div>
+
+	<!-- <div class="col-md-2">
+		<label class="bold">Ngày vào sổ</label> <input
+			style="font-size: 18px" my-date-picker class="form-control"
+			ng-model="vm.letterIn.registeredDate" ng-disabled="vm.isDisabled()"
+			type="text">
+	</div>  -->	
+ 
+	<div class="col-md-2">
+		<label class="bold">Ngày tạo</label>
+		<input style="font-size: 18px" ng-disabled="true" my-date-picker class="form-control"
+			ng-model="vm.letterIn.registeredDate" type="text">
+	</div>
+
+	<div class="col-md-1">
+		<label class="bold">Số tờ</label> <input style="font-size: 18px"
+			class="form-control" ng-disabled="vm.isDisabled()"
+			ng-model="vm.letterIn.numberOfPages" min="1" type="number">
+	</div>
+	
+	<div class="col-md-7" ng-if="vm.check() == true">
+        <label class="bold"><span class="impor">*  </span>Cơ quan tiếp nhận</label>
+		<!-- <input class="form-check-input" type="checkbox" ng-disabled="vm.isDisabled()" style="display:inline-block; vertical-align: sub; margin-left: 30px; margin-right: 3px;" ng-model="vm.letterIn.isOtherIssueOrgan" id="isOtherIssueOrgan">
+		<label class="form-check-label"  style="display:inline-block; font-weight:normal !important; color:#333 !important;" for="isOtherIssueOrgan"> Khác</label>  -->
+		<div class="input-group br" ng-if="!vm.letterIn.isOtherIssueOrgan">
+	        <input class="form-control search" type="text" data-ng-model="vm.letterIn.issueOrgan.name" ng-disabled="vm.isDisabled()" placeholder="" readonly>
+	        <span class="input-group-btn">
+	            <div class="btn-group dropup">
+	                <button class="btn btn-primary" type="submit" ng-click="vm.selectOrganization()" ng-disabled="vm.isDisabled()">
+	                    <span class="glyphicon glyphicon-plus"></span>
+	                    Chọn
+	                </button>
+	            </div>
+	        </span>
+	    </div>
+		<div class="input-group" style="width: 100%"
+			ng-if="vm.letterIn.isOtherIssueOrgan">
+			<input style="padding-left: 5px; font-size: 18px;"
+				data-ng-model="vm.letterIn.otherIssueOrgan" type="text"
+				ng-disabled="vm.isDisabled()" class="form-control" />
+              </div>
+	</div>
+</div>
+
+<div class="row" ng-if="vm.check() == true">
+	<div class="col-md-2">
+		<label class="bold">Ngày ban hành</label> <input
+			style="font-size: 18px" my-date-picker class="form-control"
+			ng-model="vm.letterIn.issuedDate" ng-disabled="vm.isDisabled()"
+			type="text">
+	</div>
+	<div class="col-md-2">
+		<label class="bold">Số đến theo sổ</label> <input
+			style="font-size: 18px" class="form-control"
+			ng-disabled="vm.isDisabled()"
+			ng-model="vm.letterIn.documentOrderNoByBook" min="1" type="number">
+	</div>
+
+	<div class="col-md-3">
+		<label class="bold">Người ký</label> <input style="font-size: 18px"
+			class="form-control" ng-disabled="vm.isDisabled()"
+			ng-model="vm.letterIn.signedPerson" type="text">
+	</div>
+
+	<div class="col-md-3">
+		<label class="bold">Chức vụ</label> <input style="font-size: 18px"
+			class="form-control" ng-disabled="vm.isDisabled()"
+			ng-model="vm.letterIn.signedPost" type="text">
+	</div>
+	<div class="col-md-2">
+		<label class="bold">Ngày hiệu lực</label> <input
+			style="font-size: 18px" my-date-picker class="form-control"
+			ng-model="vm.letterIn.officialDate" ng-disabled="vm.isDisabled()"
+			type="text">
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label class="bold"><span class="impor">* </span>Tài liệu đính kèm</label>
+			<div class="row">
+				<div>
+					<div class="col-md-12">
+						<a class="no-content1 display-block link"
+							ng-disabled="vm.isDisabled()"
+							ngf-select="vm.uploadFiles($file, $invalidFiles)" accept="*/*"
+							ngf-max-size="100MB"> <i class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+						</a>
+					</div>
+					<div class="col-md-8 upload-description">Cho phép .jpg, .jpeg, .png, .bmp, .gif, .doc, .docx, .xls, .xlsx, .pdf, .rar, .zip tối đa 100MB</div>
+					<div class="col-md-12 margin-top-20"
+						ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+						Có lỗi: <span class="bold" ng-if="vm.errorFile.$error == 'maxSize'">Kích
+							thước tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span> <span
+							class="bold"
+							ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp
+							tin {{vm.errorFile.name}} không hợp lệ.</span>
+					</div>
+				</div>
+				<div class="row"
+					ng-if="vm.letterIn.attachments.length > 0 && !vm.isDisabled()">
+					<div class="col-md-12">
+						<table id="bsTableControl4Files"
+							bs-table-control="vm.bsTableControl4Files">
+						</table>
+					</div>
+				</div>
+				<div class="row"
+					ng-if="vm.letterIn.attachments.length > 0 && vm.isDisabled()">
+					<div class="col-md-12 margin-top-20">
+						<table id="bsTableControl4FilesProcess"
+							bs-table-control="vm.bsTableControl4FilesProcess">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+.impor {
+	color: red;
+	font-weight: bold;
+}
+</style>

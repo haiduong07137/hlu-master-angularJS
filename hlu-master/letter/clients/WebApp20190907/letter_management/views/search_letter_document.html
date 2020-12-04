@@ -1,0 +1,455 @@
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="text-center bold" style="font-size: 28px;">TÌM KIẾM VĂN BẢN</div>
+                   	<div class="col-md-12" style="padding: 20px;">
+                        <div class="col-md-2" style="padding-left: 0px;">
+                            <label class="bold">Loại văn bản</label>
+                            <ui-select ng-model="vm.searchObject.documentTypeId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;" search-enabled="true">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="so.id as so in vm.documentTypeIds  | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="bold">Lĩnh vực văn bản</label>
+                            <ui-select ng-model="vm.searchObject.letterDocFieldId" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="so.id as so in vm.letterDocFieldIds  | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+				            <label class="bold">Cơ quan liên quan</label>
+								<input class="form-check-input" type="checkbox" ng-disabled="vm.isDisabled()" style="display:inline-block; vertical-align: sub; margin-left: 30px; margin-right: 3px;" ng-model="vm.searchObject.isOtherIssueOrgan" ng-click="vm.clear()" id="isOtherIssueOrgan">
+								<label class="form-check-label"  style="display:inline-block; font-weight:normal !important; color:#333 !important;" for="isOtherIssueOrgan"> Khác</label>
+								<div style="width: 100%" ng-if="!vm.searchObject.isOtherIssueOrgan">
+							        <ui-select ng-model="vm.searchObject.issueOrgan" on-select="vm.searchByText()" sortable="true" close-on-select="true" style="width: 100% !important;">
+		                                <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.text}}</ui-select-match>
+		                                <ui-select-choices repeat="so.id as so in vm.organizations  | propsFilter: {text: $select.search}">
+		                                    <div class="bold" ng-bind-html="so.text | highlight: $select.search"></div>
+		                                </ui-select-choices>
+		                            </ui-select>
+							    </div>
+								<div class="input-group" style="width: 100%" ng-if="vm.searchObject.isOtherIssueOrgan">
+									<input style="padding-left: 5px; font-size: 18px;" data-ng-model="vm.searchObject.otherIssueOrgan" type="text" ng-disabled="vm.isDisabled()" class="form-control" />
+				                </div>
+							</div>
+                        <div class="col-md-2">
+							<label class="bold">Từ ngày</label>
+							<input style="font-size: 18px" my-date-picker ng-disabled="vm.isDisabled()" on-select="vm.searchByText()" class="form-control" ng-model="vm.searchObject.registeredDateBegin" type="text">
+						</div>
+						<div class="col-md-2" style="padding-right: 0px;">
+							<label class="bold">Đến ngày</label>
+							<input style="font-size: 18px" my-date-picker ng-disabled="vm.isDisabled()" on-select="vm.searchByText()" class="form-control" ng-model="vm.searchObject.registeredDateEnd" type="text">
+						</div>
+                   	</div>
+                    <div class="col-md-12" style="padding: 0px 20px 20px 20px;">
+                        <div class="input-group br">
+                            <input class="form-control search ng-pristine ng-untouched ng-valid ng-empty" type="text" ng-keypress="vm.enterSearchCode()" data-ng-model="vm.searchObject.text" placeholder="Tìm kiếm theo số hiệu văn bản hoặc trích yếu"> 
+                            <div class="input-group-btn">
+         					<div class="btn-group dropup">
+             					<button class="btn btn-primary" type="submit" ng-click="vm.searchByText()"><span class="glyphicon glyphicon-search"></span> Tìm</button>
+                         	</div>
+                        	</div>
+                    	</div>
+                   	</div>
+                	<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+            	</div>
+        	</div>
+    	</div>
+	</div>
+</div>
+<script type="text/ng-template" id="viewDocumentInPopup.html">
+    <div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"> Tình trạng văn bản <b>{{vm.letterIn.task.currentStep.name}}</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-6 text-center">
+            <label>Chưa hoàn thành
+                <input type="checkbox" ng-model="vm.value1" disabled>
+            </label>
+        </div>
+        <div class="col-md-6 text-center">
+            <label>Đã hoàn thành
+                <input type="checkbox" ng-model="vm.value2" disabled>
+            </label>
+        </div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td colspan="2" class="text-center">Thông tin văn bản</td>
+            </tr>
+            <tr>
+                <td class="col-md-6">
+                    <ul>
+                        <li>Lãnh đạo chỉ đạo:
+                            <ul>
+                                <li ng-repeat="b in vm.assignerRole"><b>{{b}}</b></li>
+                            </ul>
+                        </li>
+                        <li>Bộ phận tham mưu, thực hiện: <b>{{vm.chairmanRole}}</b></li>
+                        <li>Bộ phận phối thực hiện:
+                            <ul>
+                                <li ng-repeat="e in vm.processRole"><b>{{e}}</b></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="col-md-6">
+                    <ul>
+                        <li>Số hiệu văn bản: <b>{{vm.letterIn.docOriginCode}}</b></li>
+                        <li>Ngày ban hành: <b>{{vm.letterIn.issuedDate | date:'dd/MM/yyyy'}}</b></li>
+                        <li>Nơi ban hành: <b>{{vm.issueOrgan}}</b></li>
+                        <li>Tiêu đề: <b>{{vm.letterIn.title}}</b></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="row form-group" style="padding-top: 10px">
+                    <div class="divList col-md-12">
+                        <table cellpadding="12" class="table table-bordered table-hover">
+							<tr>
+                				<td colspan="3" class="text-center">Tài liệu liên quan</td>
+            				</tr>
+                            <tr ng-repeat="item in vm.ListAttachment">
+                                <td class="td-download" style="width:50px">
+                                    <span ng-bind="$index + 1"></span>
+                                </td>
+                                <td style="padding:10px; cursor: pointer" ng-click="viewFileInBrowser(item)" title="Xem tài liệu">
+                                    <a class="bold"><span ng-bind="item.file.name"></span></a>
+                                </td>
+                                <td class="td-download" title="Tải tài liệu" >
+                                    <a href="#" ng-click="vm.downloadDocument(item)">
+                                        <i class="fa fa-download" title="Tải tài liệu" aria-hidden="true"></i> Tải xuống
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="viewDocumentOutPopup.html">
+<div modal-movable>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"> Tình trạng văn bản <b>{{vm.letterOut.task.currentStep.name}}</b></h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td colspan="2" class="text-center">Thông tin văn bản</td>
+            </tr>
+            <tr>
+                <td class="col-md-6" ng-if="vm.issueOrgan != null">
+                    <ul>
+                        <li>Cơ quan tiếp nhận: <b>{{vm.issueOrgan}}</b></li>
+                    </ul>
+                </td>
+                <td class="col-md-6">
+                    <ul>
+                        <li ng-if="vm.letterOut.docOriginCode != null">Số hiệu văn bản: <b>{{vm.letterOut.docOriginCode}}</b></li>
+                        <li ng-if="vm.letterOut.issuedDate != null">Ngày ban hành: <b>{{vm.letterOut.issuedDate | date:'dd/MM/yyyy'}}</b></li>
+                        <li ng-if="vm.issueOrgan != null">Nơi ban hành: <b>{{vm.issueOrgan}}</b></li>
+                        <li>Tiêu đề: <b>{{vm.letterOut.title}}</b></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="row form-group" style="padding-top: 10px">
+                    <div class="divList col-md-12">
+                        <table cellpadding="12" class="table table-bordered table-hover">
+							<tr>
+                				<td colspan="3" class="text-center">Tài liệu liên quan</td>
+            				</tr>
+                            <tr ng-repeat="item in vm.ListAttachment">
+                                <td class="td-download" style="width:50px">
+                                    <span ng-bind="$index + 1"></span>
+                                </td>
+                                <td style="padding:10px; cursor: pointer" ng-click="viewFileInBrowser(item)" title="Xem tài liệu">
+                                    <a class="bold"><span ng-bind="item.file.name"></span></a>
+                                </td>
+                                <td class="td-download">
+                                    <a href="#" ng-click="vm.downloadDocument(item)" title="Tải tài liệu">
+                                        <i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+    </div>
+</div>
+</script>
+<script type="text/ng-template" id="viewAllFileInDocument.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="fa fa-building"></i> Danh sách file đính kèm</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row form-group" style="padding: 30px;">
+                <div class="col-md-12">
+                    <div class="row form-group" style="padding-top: 10px">
+        <div class="divList col-md-12">
+            <table cellpadding="12" class="table table-bordered table-hover">
+                <tr ng-repeat="item in vm.ListAttachment">
+                    <td class="td-download" style="width:50px">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td style="padding:10px; cursor: pointer" ng-click="viewFileInBrowser(item)">
+                        <a class="bold"><span ng-bind="item.file.name"></span></a>
+                    </td>
+                    <td class="td-download">
+                            <a href="#" ng-click="vm.downloadDocument(item)">
+                                <i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+                            </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="viewFileInBrowser.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="fa fa-building"></i> <span ng-bind="vm.fileView.file.name"></span> </h4>
+        </div>
+        <div class="modal-body viewFileEmbed">
+			<div style="clear:both">
+				<embed ng-src="{{content}}" style="width:100%;height:500px;"></embed>
+        	</div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</script>
+<style>
+	.td-download a {
+	    color: #000;
+	}
+	.table>tbody>tr>td.td-download{
+		text-align: center;
+	    white-space: nowrap;
+	    vertical-align: middle;
+	    width: 100px;
+	}
+    .activebar {
+        background-color: #4f5b69
+    }
+    textarea.textarea-size{
+        resize: none;
+    }
+    .add-new-table td {
+        border: none !important;
+    }
+    .add-new-table th {
+        border: none !important;;
+    }
+    .add-new-table tr {
+        border: none !important;;
+    }
+    .activebarparent {
+        color: white;
+        background-color: #3C8DBC
+    }
+
+    .nav-side-menu {
+        font-family: verdana;
+        font-size: 12px;
+        font-weight: 200;
+        background-color: #2F4050;
+        color: #e1ffff;
+    }
+    .nav-side-menu .toggle-btn {
+        display: none;
+    }
+    .nav-side-menu ul,
+    .nav-side-menu li {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+        line-height: 35px;
+        cursor: pointer;
+        /*
+          .collapsed{
+             .caret:before{
+                       font-family: FontAwesome;
+                       content: "\f053";
+                       display: inline-block;
+                       padding-left:10px;
+                       padding-right: 10px;
+                       vertical-align: middle;
+                       float:right;
+                  }
+           }
+      */
+    }
+    .nav-side-menu ul :not(collapsed) .caret:before,
+    .nav-side-menu li :not(collapsed) .caret:before {
+        font-family: FontAwesome;
+        content: "\f078";
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+        float: right;
+    }
+    .nav-side-menu ul .active,
+    .nav-side-menu li .active {
+        border-left: 3px solid #d19b3d;
+        background-color: #4f5b69;
+    }
+    .nav-side-menu li {
+        padding-left: 0px;
+        border-left: 3px solid #2e353d;
+        border-bottom: 1px solid #23282e;
+        background-color: #437C97;
+    }
+    .nav-side-menu li a {
+        text-decoration: none;
+        color: #e1ffff;
+    }
+    .nav-side-menu li a i {
+        padding-left: 10px;
+        width: 20px;
+        padding-right: 20px;
+    }
+    .nav-side-menu li:hover {
+        border-left: 3px solid #d19b3d;
+        background-color: #4f5b69;
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        transition: all 1s ease;
+    }
+    @media (max-width: 767px) {
+        .nav-side-menu {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .nav-side-menu .toggle-btn {
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10 !important;
+            padding: 3px;
+            background-color: #ffffff;
+            color: #000;
+            width: 40px;
+            text-align: center;
+        }
+        .brand {
+            text-align: left !important;
+            font-size: 22px;
+            padding-left: 20px;
+            line-height: 50px !important;
+        }
+    }
+    @media (min-width: 767px) {
+        .nav-side-menu .menu-list .menu-content {
+            display: block;
+        }
+    }
+
+     .modal-lg{
+         width: 60%;
+     }
+    @media only screen and (max-width: 768px){
+        .modal-lg {
+            width: 100%;
+        }
+    }
+
+    .bootstrap .tags {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        /*border-radius: 4px;*/
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    .bootstrap .tags.focused {
+        font-size:18px;
+        border-color: #66afe9;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+    }
+
+    .bootstrap .tags .tag-item {
+        font-size:18px;
+        background: #428bca;
+        border: 1px solid #357ebd;
+        border-radius: 4px;
+        color: #fff;
+    }
+
+    .bootstrap .tags .tag-item.selected {
+        font-size:18px;
+        background: #d9534f;
+        border: 1px solid #d43f3a;
+        border-radius: 4px;
+        color: #fff;
+    }
+
+    .bootstrap .tags .tag-item button {
+        background: transparent;
+        color: #000;
+        opacity: .4;
+    }
+	a:hover {
+		text-decoration: none;
+	}
+    /*.bootstrap .autocomplete {*/
+        /*border-radius: 4px;*/
+    /*}*/
+
+    /*.bootstrap .autocomplete .suggestion-item.selected {*/
+        /*color: #262626;*/
+        /*background-color: #e9e9e9;*/
+    /*}*/
+
+    /*.bootstrap .autocomplete .suggestion-item em {*/
+        /*font-weight: normal;*/
+        /*background-color: #ffff00;*/
+    /*}*/
+
+    /*.bootstrap .autocomplete .suggestion-item.selected em {*/
+        /*color: #262626;*/
+        /*background-color: #ffff00;*/
+    /*}*/
+</style>

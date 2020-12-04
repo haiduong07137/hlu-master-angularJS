@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 3 elements from project &apos;letter-app&apos;&#x0D;&#x0A;- Original project: &apos;letter-app&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     nullBáo cáo nhóm 3(Hệ thống xếp lịch thi).docx&#x0D;&#x0A;     nullbaocao_team3.docx&#x0D;&#x0A;     nullCông việc HIV đã và chưa hoàn thành.xlsx" description="Delete elements" element1="nullBáo cáo nhóm 3(Hệ thống xếp lịch thi).docx" element2="nullCông việc HIV đã và chưa hoàn thành.xlsx" element3="nullbaocao_team3.docx" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="3" stamp="1593775751145" subPackages="false" version="1.0"/>
+</session>
